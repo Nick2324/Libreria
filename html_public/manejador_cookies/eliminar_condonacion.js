@@ -1,0 +1,3 @@
+function eliminarEstadoCondonacion(){
+    eraseCookie("transaccion");
+}

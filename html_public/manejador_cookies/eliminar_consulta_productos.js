@@ -1,0 +1,3 @@
+function eliminarConsultaProductos(){
+    eraseCookie("productos");
+}

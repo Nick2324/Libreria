@@ -1,0 +1,3 @@
+function eliminarConsulaUsuarios(){
+    eraseCookie("usuarios");
+}
