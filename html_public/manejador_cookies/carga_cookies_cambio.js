@@ -24,3 +24,23 @@ function resolverPeticion(tipoCookie,accion){
         }
     }
 }
+
+function eliminarElementoCambio(tipoCookie){
+    eraseCookie(tipoCookie+"_cambio");
+}
+
+function cargarElementoCambio(tipoCookie){
+    var id, estado;
+    var objeto = eval("("+decode(readCookie(tipoCookie+"_cambio"))+")");
+    if(tipoCookie == "producto"){
+        var id = document.getElementsByName("id_producto")[0];
+        var estado = document.getElementsByName("inventario_producto")[0];
+        id.setAttribute("value",objeto.id);
+        estado.setAttribute("value",objeto.inventario);
+    }else if(tipoCookie == "usuario"){
+        var id = document.getElementsByName("id_producto")[0];
+        var estado = document.getElementsByName("inventario_producto")[0];
+        id.setAttribute("value",objeto.identificacion);
+        estado.setAttribute("value",objeto.estado);
+    }
+}

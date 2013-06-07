@@ -88,5 +88,10 @@
             echo "No se pudo crear!";
     }else if(substr_count($_SERVER['HTTP_REFERER'],"consultar_usuarios.php") != 0){
         echo 'consultando usuario';
+    }else if(substr_count($_SERVER['HTTP_REFERER'],"cambiar_estado_producto.php") != 0){
+        echo "=P <br>";
+        print_r($_POST);
+        echo $_POST['id_producto'];
+        echo $_POST['inventario_producto'];
     }
 ?>

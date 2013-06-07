@@ -3,7 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Modificando producto</title>
-        <script src="prueba.js"></script>
+        <script src="../manejador_cookies/cookies.js"></script>
+        <script src="prueba_modificable.js"></script>
         <script src=""></script>
     </head>
     <body>
