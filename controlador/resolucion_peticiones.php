@@ -13,11 +13,10 @@
     use Usuarios\Cliente;
     use Usuarios\ClienteAfiliado;
     use Usuarios\Trabajador;
-
-    //Aqui viene comprobacion de perfil
-    //Aqui viene comprobación de permisos
+    
     if(substr_count($_SERVER['HTTP_REFERER'],"realizar_transaccion.php") != 0){
         $manejadorTransacciones = new RegistradorTransacciones;
+        $manejadorTransacciones->construirManejable($_POST);
         $manejadorTransacciones->registrarTransaccion();
     }else if(substr_count($_SERVER['HTTP_REFERER'],"aniadir_producto.php") != 0){
         $manejadorProductos = new ManejadorProductos;

@@ -6,9 +6,10 @@
         <script src="../manejador_cookies/cookies.js"></script>
         <script src="prueba.js"></script>
         <script src="../generador/generadorElementosHTML.js"></script>
-        <script src="../manejador_cookies/guardar_transaccion.js"></script>
         <script src="../manejador_cookies/cargar_transaccion.js"></script>
-        <script src="../manejador_cookies/eliminar_transaccion.js"></script>
+        <!--<script src="../manejador_cookies/eliminar_transaccion.js"></script>-->
+        <script src="eliminar_producto.js"></script>
+        <script src="modificar_producto.js"></script>
     </head>
     <body onload="cargarEstadoTransaccion()">
         <div id="head">

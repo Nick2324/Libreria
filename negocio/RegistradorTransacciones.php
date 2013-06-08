@@ -3,6 +3,8 @@
 namespace Manejadores;
 
 use Transacciones\Transaccion;
+use Usuarios\Usuario;
+use Usuarios\Trabajador;
 use Usuarios\Cliente;
 use Usuarios\ClienteAfiliado;
 use Manejadores;
@@ -20,8 +22,6 @@ class RegistradorTransacciones extends Manejador{
     public function __construct(){
         $this->manejadorClientes = new ManejadorUsuarios;
         $this->manejadorProductos = new ManejadorProductos;
-        $this->gatewayTransaccion = new GatewayTransaccion;
-        $this->construirManejable();
     }
 
     function __destruct(){}
@@ -29,50 +29,44 @@ class RegistradorTransacciones extends Manejador{
 
     public function construirManejable($partes){
         $this->manejable = new Transaccion;
-        $this->manejable->setIdTransaccion($this->construirIdTransaccion());
-        $this->manejable->setCliente($this->construirCliente());
-        $this->manejable->setProductos($this->construirProductos());
-        $this->manejable->setCantidadProductos($this->construirCantidadProductos());
-        $this->manejable->setElementoPago($this->construirElementoPago());
+        $this->manejable->setIdTransaccion($this->generarId("transaccion"));
+        $this->manejable->setCliente($this->construirCliente($partes));
+        $this->manejable->setProductos($this->construirProductos($partes));
+        $this->manejable->setCantidadProductos($this->construirCantidadProductos($partes));
+        $this->manejable->setElementoPago($this->construirElementoPago($partes));
         $this->manejable->calcularHoraTransaccion();
         $this->manejable->calcularFechaTransaccion();
         $this->manejable->calcularTotalTransaccion();
     }
 
     public function registrarTransaccion(){
-        echo '<br> registrandoTransaccion..';
+        echo '<br> registrandoTransaccion..<br>';
     }
 
-    private function construirCliente(){
-        return $this->manejadorClientes->buscarCliente((integer)$_POST['identificacion_cliente']);
+    private function construirCliente($partes){
+        echo "<br>Construyendo cliente<br>";
+        return null;
     }
 
-    private function construirProductos(){
-        $productos = array();
-        for($i=0;$_POST["id_producto_$i"] != null;$i++)
-            $productos[$i] = $this->manejadorProductos->buscarProducto((integer)$_POST["id_producto_$i"]);
-        echo print_r($productos);
-        return $productos;
-    }
-
-    public function construirCantidadProductos(){
-        echo '<br> construyendo cantidadProductos..';
-        $cantidadProductos = array();
-        for($i=0;$_POST["cantidad_producto_$i"] != null;$i++)
-            $cantidadProductos[$i] = (integer)$_POST["cantidad_producto_$i"];
-        echo print_r($cantidadProductos);
-        return $cantidadProductos;
-    }
-    
-    public function construirIdTransaccion(){
+    private function construirVendedor($partes){
+        echo "<br>Construyendo vendedor<br>";
         return null;
     }
     
-    public function construirElementoPago(){
-        return $_POST['elementoPago'];
+    private function construirProductos($partes){
+        echo "<br>Construir productos<br>";
+        return $productos;
+    }
+
+    public function construirCantidadProductos($partes){
+        echo "<br>Construir cantidad productos<br>";
+        return $cantidadProductos;
     }
     
-    public function construirManejableCambio($partes){}
+    public function construirElementoPago($partes){
+        echo "<br>Construyendo elemento pago<br>";
+        return $partes['elementoPago'];
+    }
     
 }
 ?>

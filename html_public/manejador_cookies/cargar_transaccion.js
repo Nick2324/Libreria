@@ -35,7 +35,6 @@ function cargarProductos(){
     if(productos!=null){
         var tablaProductos=document.getElementById("productos").tBodies[0];
         var cantidad=eval(decode(readCookie("cantidad")));
-        var precioTotal=eval(decode(readCookie("precioTotal")));
         var valorTabla=new Array();
         var productoActual;
         for(var i=0;i<productos.length;i++){
@@ -56,10 +55,10 @@ function cargarProductos(){
             valorTabla[i][3].appendChild(crearHidden("transaccionalidad_producto_"+i,productoActual.transaccionalidad));
             valorTabla[i][4].innerHTML=cantidad[i];
             valorTabla[i][4].appendChild(crearHidden("cantidad_producto_"+i,cantidad[i]));
-            valorTabla[i][5].innerHTML=precioTotal[i];
-            valorTabla[i][5].appendChild(crearHidden("precio_total_producto_"+i,precioTotal[i]));
-            valorTabla[i][6].appendChild(crearBoton(i,"Modificar",""));
-            valorTabla[i][7].appendChild(crearBoton(i,"Eliminar",""));
+            valorTabla[i][5].innerHTML=productoActual.precio*cantidad[i];
+            valorTabla[i][5].appendChild(crearHidden("precio_total_producto_"+i,productoActual.precio*cantidad[i]));
+            valorTabla[i][6].appendChild(crearBoton(i,"Modificar","modificarProducto("+i+")"));
+            valorTabla[i][7].appendChild(crearBoton(i,"Eliminar","eliminarProducto("+i+")"));
             for(var j=0;j<valorTabla[i].length;j++)
                 tablaProductos.rows[i+1].appendChild(valorTabla[i][j]);
         }
