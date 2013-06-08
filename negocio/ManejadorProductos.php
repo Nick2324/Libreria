@@ -18,129 +18,59 @@ class ManejadorProductos extends Manejador{
     function __destruct(){}
 
     public function actualizarProducto(){
-        $av = array();
-        $av[0]=array(0=>"`k_id_producto`",
-                1=>"`k_id_idioma`",
-                2=>"`n_nombre`",
-                3=>"`i_transaccionalidad`",
-                4=>"`i_inventario`",
-                5=>"`n_descripcion`",
-                6=>"`f_fecha_edicion`",
-                7=>"`q_stock`",
-                8=>"`v_precio`",
-                9=>"`k_id_formato`",
-                10=>"`q_prestada`");
-        $av[1]=array(0=>$this->manejable->getId(),
-                1=>$this->manejable->getIdioma(),
-                2=>$this->manejable->getNombre(),
-                3=>$this->manejable->getTransaccionalidad(),
-                4=>$this->manejable->getInventarioActivo(),
-                5=>$this->manejable->getDescripcion(),
-                6=>$this->manejable->getFechaEdicion(),
-                7=>$this->manejable->getStock(),
-                8=>$this->manejable->getPrecio(),
-                9=>$this->manejable->getFormato(),
-                10=>$this->manejable->getPrestado());
-        $this->update("producto", $av);
-        if($this->manejable instanceof Libro){
-            $av[0] = array(0=>"`k_id_producto`",
-                    1=>"`n_genero`",
-                    2=>"`n_editorial`",
-                    3=>"`n_materia`",
-                    4=>"`n_autor`",
-                    5=>"`id_libro`");
-            $av[1] = array(0=>$this->manejable->getId(),
-                1=>$this->manejable->getGenero(),
-                2=>$this->manejable->getEditorial(),
-                3=>$this->manejable->getMateria(),
-                4=>$this->manejable->getAutores(),
-                5=>$this->manejable->getIdLibro());
-            $this->update("libro", $av);
-        }else if($this->manejable instanceof Video){
-            $av[0] = array(0=>"`k_id_producto`",
-                    1=>"`id_video`",
-                    2=>"`n_productor`",
-                    3=>"`n_director`",
-                    4=>"`n_tipo`");
-            $av[1] = array(0=>$this->manejable->getId(),
-                1=>$this->manejable->getIdVideo(),
-                2=>$this->manejable->getProductor(),
-                3=>$this->manejable->getDirector(),
-                4=>$this->manejable->getTipo());
-            $this->update("video", $av);
+        if($this->integridadProducto()){
+            if($this->manejable instanceof Libro && $this->integridadLibro()){
+                $this->update("producto", $this->generarParesAVProducto());
+                $this->update("libro", $this->generarParesAVLibro());
+                return true;
+            }else if($this->manejable instanceof Video && $this->integridadVideo()){
+                $this->update("producto", $this->generarParesAVProducto());
+                $this->update("video", $this->generarParesAVVideo());
+                return true;
+            }
         }
+        return false;
     }
     
-    public function actualizarLibro(){}
-
-    public function actualizarVideo(){}
-
-    public function borrarProducto(){}
-    
+    public function cambiarEstadoProducto(){
+        $this->abrirConexion();
+        if($this->manejable->getInventarioActivo() == 1)
+            $this->manejable->setInventarioActivo(2);
+        else if($this->manejable->getInventarioActivo() == 2)
+            $this->manejable->setInventarioActivo(1);
+        $query = "UPDATE `producto` SET `i_inventario`='".$this->manejable->getInventarioActivo()."
+            ' WHERE `k_id_producto`='".$this->manejable->getId()."'";
+        echo $query."<br>";
+        $resultado = mysql_query($query);
+        $this->cerrarConexion();
+        return $resultado;
+    }
 
     public function buscarProducto(){
         $coincidencias = array();
-        if($this->manejable->getId()!=null){
-            
+        $av = $this->generarParesAVProducto();
+        $coincidencias = $this->fetchProducto($coincidencias,$this->select("producto", $av));
+        if($this->manejable instanceof Libro){
+            $av = $this->generarParesAVLibro();
+            $coincidencias = $this->fetchLibro($coincidencias,$this->select("libro", $av));
+            $coincidencias = $this->eliminarNoCoincidentes($coincidencias);
+        }else if($this->manejable instanceof Video){
+            $av = $this->generarParesAVVideo();
+            $coincidencias =$this->fetchVideo($coincidencias,$this->select("video", $av));
+            $coincidencias = $this->eliminarNoCoincidentes($coincidencias);
         }else{
-            $avProducto = array();
-            $avTipo = array();
-            $avProducto[0]=array(0=>"`k_id_producto`",
-                1=>"`k_id_idioma`",
-                2=>"`n_nombre`",
-                3=>"`i_transaccionalidad`",
-                4=>"`i_inventario`",
-                5=>"`n_descripcion`",
-                6=>"`f_fecha_edicion`",
-                7=>"`q_stock`",
-                8=>"`v_precio`",
-                9=>"`k_id_formato`",
-                10=>"`q_prestada`");
-            $avProducto[1]=array(0=>$this->manejable->getId(),
-                1=>$this->manejable->getIdioma(),
-                2=>$this->manejable->getNombre(),
-                3=>$this->manejable->getTransaccionalidad(),
-                4=>$this->manejable->getInventarioActivo(),
-                5=>$this->manejable->getDescripcion(),
-                6=>$this->manejable->getFechaEdicion(),
-                7=>$this->manejable->getStock(),
-                8=>$this->manejable->getPrecio(),
-                9=>$this->manejable->getFormato(),
-                10=>$this->manejable->getPrestado());
-            $coincidencias = $this->fetchProducto($coincidencias,$this->select("producto", $avProducto));
-            if($this->manejable instanceof Libro){
-                $avTipo[0] = array(0=>"`n_genero`",
-                    1=>"`n_editorial`",
-                    2=>"`n_materia`",
-                    3=>"`n_autor`",
-                    4=>"`id_libro`");
-                $avTipo[1] = array(0=>$this->manejable->getGenero(),
-                    1=>$this->manejable->getEditorial(),
-                    2=>$this->manejable->getMateria(),
-                    3=>$this->manejable->getAutores(),
-                    4=>$this->manejable->getIdLibro());
-                $coincidencias =$this->fetchLibro($coincidencias,$this->select("libro", $avTipo));
-            }else if($this->manejable instanceof Video){
-                $avTipo[0] = array(0=>"`id_video`",
-                    1=>"`n_productor`",
-                    2=>"`n_director`",
-                    3=>"`n_tipo`");
-                $avTipo[1] = array(0=>$this->manejable->getIdVideo(),
-                    1=>$this->manejable->getProductor(),
-                    2=>$this->manejable->getDirector(),
-                    3=>$this->manejable->getTipo());
-                $coincidencias =$this->fetchLibro($coincidencias,$this->select("video", $avTipo));
-            }else{
-                $avTipo[0] = array(0=>"`k_id_producto`");
-                for($i=0;$i<count($coincidencias);$i++){
-                    $avTipo[1] = array(0=>$coincidencias[$i]->getId());
-                    $resultado = $this->fetchLibro(array(0=>$coincidencias[$i]),$this->select("libro",$avTipo));
-                    if(count($resultado)==0)
-                        $resultado = $this->fetchVideo(array(0=>$coincidencias[$i]),$this->select("video",$avTipo));
-                    $coincidencias[$i] = $resultado[0];
-                }
+            $av = null;
+            $av = array();
+            $av[0] = array(0=>"`k_id_producto`");
+            for($i=0;$i<count($coincidencias);$i++){
+                $av[1] = array(0=>$coincidencias[$i]->getId());
+                $resultado = $this->fetchLibro(array(0=>$coincidencias[$i]),$this->select("libro",$av));
+                if(!($resultado[0] instanceof Libro))
+                    $resultado = $this->fetchVideo(array(0=>$coincidencias[$i]),$this->select("video",$av));
+                $coincidencias[$i] = $resultado[0];
             }
         }
+        echo '<br>asi es como quedan al final final: <br>';
         print_r($coincidencias);
         return $coincidencias;
     }
@@ -155,7 +85,8 @@ class ManejadorProductos extends Manejador{
         $this->manejable->setId($partes['id']);
         $this->manejable->setNombre($partes['nombre']);
         $this->manejable->setDescripcion($partes['descripcion']);
-        $this->manejable->setTransaccionalidad($partes['transaccionalidad']);
+        if($partes['transaccionalidad']!="Seleccion")
+            $this->manejable->setTransaccionalidad($partes['transaccionalidad']);
         $this->manejable->setFechaEdicion($partes['fecha_edicion']);
         $this->manejable->setPrecio($partes['precio']);
         $this->manejable->setStock($partes['stock']);
@@ -169,17 +100,15 @@ class ManejadorProductos extends Manejador{
         if($this->manejable instanceof Libro){
             $this->manejable->setAutores($partes['autor']);
             $this->manejable->setEditorial($partes['editorial']);
-            $this->manejable->setGenero($partes['genero']);
+            if($partes['genero']!="Seleccion")
+                $this->manejable->setGenero($partes['genero']);
             $this->manejable->setMateria($partes['materia']);
         }else if($this->manejable instanceof Video){
-            $this->manejable->setTipo($partes['tipo']);
+            if($partes['tipo']!="Seleccion")
+                $this->manejable->setTipo($partes['tipo']);
             $this->manejable->setProductor($partes['productor']);
             $this->manejable->setDirector($partes['director']);
         }
-    }
-
-    public function construirManejableCambio($partes){
-        
     }
 
     public function crearProducto(){
@@ -192,7 +121,8 @@ class ManejadorProductos extends Manejador{
                $this->manejable->getStock()!=null &&
                $this->manejable->getFormato()!=null &&
                $this->manejable->getIdioma()!=null &&
-               $this->manejable->getInventarioActivo()!=null){
+               $this->manejable->getInventarioActivo()!=null &&
+               $this->integridadProducto()){
                 $this->manejable->setId($this->generarId("producto")+1);
                 if($this->manejable->getTransaccionalidad()=="Prestamo")
                     $this->manejable->setPrestado(0);
@@ -216,11 +146,11 @@ class ManejadorProductos extends Manejador{
                              ".$this->manejable->getFormato().",
                              ".$this->manejable->getPrestado().")";
                 if($this->manejable instanceof Libro){
-                    echo "fadf ".($this->manejable instanceof Libro || $this->manejable instanceof Video);
                     if($this->manejable->getAutores()!=null &&
                        $this->manejable->getEditorial()!=null &&
                        $this->manejable->getGenero()!=null &&
-                       $this->manejable->getMateria()!=null){
+                       $this->manejable->getMateria()!=null  && 
+                       $this->integridadLibro()){
                         $this->manejable->setIdLibro($this->generarId("libro")+1);
                         $this->abrirConexion();
                         $query_libro = "INSERT INTO `libro` (`k_id_producto`, 
@@ -237,7 +167,8 @@ class ManejadorProductos extends Manejador{
                 }else if($this->manejable instanceof Video){
                     if($this->manejable->getProductor()!=null &&
                        $this->manejable->getTipo()!=null &&
-                       $this->manejable->getDirector()!=null){
+                       $this->manejable->getDirector()!=null &&
+                       $this->integridadVideo()){
                         $this->manejable->setIdVideo($this->generarId("video")+1);
                         $this->abrirConexion();
                         $query_video = "INSERT INTO `video`
@@ -315,35 +246,37 @@ class ManejadorProductos extends Manejador{
     }
     
     public function fetchLibro($coincidencias,$arrayQuery){
-        $i=0;
         while($fila = mysql_fetch_array($arrayQuery)){
-            $libro = $this->settingProducto("libro", $coincidencias[$i]);
-            $libro->setGenero($fila[1]);
-            $libro->setEditorial($fila[2]);
-            $libro->setMateria($fila[3]);
-            $libro->setAutores($fila[4]);
-            $libro->setIdLibro($fila[5]);
-            $coincidencias[$i] = $libro;
-            $i++;
+            for($i=0;$i<count($coincidencias);$i++){
+                if($fila[0] == $coincidencias[$i]->getId()){
+                    $libro = $this->settingProducto("libro", $coincidencias[$i]);
+                    $libro->setGenero($fila[1]);
+                    $libro->setEditorial($fila[2]);
+                    $libro->setMateria($fila[3]);
+                    $libro->setAutores($fila[4]);
+                    $libro->setIdLibro($fila[5]);
+                    $coincidencias[$i] = $libro;
+                    break;
+                }
+            }
         }
-        if($i==0)
-            return null;
         return $coincidencias;
     }
     
     public function fetchVideo($coincidencias,$arrayQuery){
-        $i=0;
         while($fila = mysql_fetch_array($arrayQuery)){
-            $video = $this->settingProducto("video", $coincidencias[$i]);
-            $video->setIdVideo($fila[0]);
-            $video->setProductor($fila[2]);
-            $video->setDirector($fila[3]);
-            $video->setTipo($fila[4]);
-            $coincidencias[$i] = $video;
-            $i++;
+            for($i=0;$i<count($coincidencias);$i++){
+                if($fila[1] == $coincidencias[$i]->getId()){
+                    $video = $this->settingProducto("video", $coincidencias[$i]);
+                    $video->setIdVideo($fila[0]);
+                    $video->setProductor($fila[2]);
+                    $video->setDirector($fila[3]);
+                    $video->setTipo($fila[4]);
+                    $coincidencias[$i] = $video;
+                    break;
+                }
+            }
         }
-        if($i==0)
-            return null;
         return $coincidencias;
     }
     
@@ -354,17 +287,117 @@ class ManejadorProductos extends Manejador{
         else if($tipo == "libro")
             $producto = new Libro;
         $producto->setId($setting->getId());
-            $producto->setIdioma($setting->getIdioma());
-            $producto->setNombre($setting->getNombre());
-            $producto->setTransaccionalidad($setting->getTransaccionalidad());
-            $producto->setInventarioActivo($setting->getInventarioActivo());
-            $producto->setDescripcion($setting->getDescripcion());
-            $producto->setFechaEdicion($setting->getFechaEdicion());
-            $producto->setStock($setting->getStock());
-            $producto->setPrecio($setting->getPrecio());
-            $producto->setFormato($setting->getFormato());
-            $producto->setPrestado($setting->getPrestado());
-            return $producto;
+        $producto->setIdioma($setting->getIdioma());
+        $producto->setNombre($setting->getNombre());
+        $producto->setTransaccionalidad($setting->getTransaccionalidad());
+        $producto->setInventarioActivo($setting->getInventarioActivo());
+        $producto->setDescripcion($setting->getDescripcion());
+        $producto->setFechaEdicion($setting->getFechaEdicion());
+        $producto->setStock($setting->getStock());
+        $producto->setPrecio($setting->getPrecio());
+        $producto->setFormato($setting->getFormato());
+        $producto->setPrestado($setting->getPrestado());
+        return $producto;
+    }
+    
+    public function eliminarNoCoincidentes($coincidencias){
+        for($i=0;$i<count($coincidencias);$i++)
+            if(!($coincidencias[$i] instanceof Libro || $coincidencias[$i] instanceof Video)){
+                for($j=$i;$j<count($coincidencias)-1;$j++)
+                    $coincidencias[$j] = $coincidencias[$j+1];
+                unset($coincidencias[count($coincidencias)-1]);
+                $i--;
+            }
+        return $coincidencias;
+    }
+    
+    public function generarParesAVProducto(){
+        $av = array();
+        $av[0]=array(0=>"`k_id_producto`",
+            1=>"`k_id_idioma`",
+            2=>"`n_nombre`",
+            3=>"`i_transaccionalidad`",
+            4=>"`i_inventario`",
+            5=>"`n_descripcion`",
+            6=>"`f_fecha_edicion`",
+            7=>"`q_stock`",
+            8=>"`v_precio`",
+            9=>"`k_id_formato`",
+            10=>"`q_prestada`");
+        $av[1]=array(0=>$this->manejable->getId(),
+            1=>$this->manejable->getIdioma(),
+            2=>$this->manejable->getNombre(),
+            3=>$this->manejable->getTransaccionalidad(),
+            4=>$this->manejable->getInventarioActivo(),
+            5=>$this->manejable->getDescripcion(),
+            6=>$this->manejable->getFechaEdicion(),
+            7=>$this->manejable->getStock(),
+            8=>$this->manejable->getPrecio(),
+            9=>$this->manejable->getFormato(),
+            10=>$this->manejable->getPrestado());
+        return $av;
+    }
+    
+    public function generarParesAVLibro(){
+        $av = array();
+        $av[0] = array(0=>"`k_id_producto`",
+            1=>"`id_libro`",
+            2=>"`n_editorial`",
+            3=>"`n_materia`",
+            4=>"`n_autor`",
+            5=>"`n_genero`");
+        $av[1] = array(0=>$this->manejable->getId(),
+            1=>$this->manejable->getIdLibro(),
+            2=>$this->manejable->getEditorial(),
+            3=>$this->manejable->getMateria(),
+            4=>$this->manejable->getAutores(),
+            5=>$this->manejable->getGenero());
+        return $av;
+    }
+    
+    public function generarParesAVVideo(){
+        $av = array();
+        $av[0] = array(
+            0=>"`k_id_producto`",
+            1=>"`id_video`",
+            2=>"`n_productor`",
+            3=>"`n_director`",
+            4=>"`n_tipo`");
+        $av[1] = array(0=>$this->manejable->getId(),
+            1=>$this->manejable->getIdVideo(),
+            2=>$this->manejable->getProductor(),
+            3=>$this->manejable->getDirector(),
+            4=>$this->manejable->getTipo());
+        return $av;
+    }
+    
+    public function integridadProducto(){
+        $integro = true;
+        if(($this->manejable->getNombre()!=null && strlen($this->manejable->getNombre())>20) ||
+           ($this->manejable->getDescripcion()!=null && strlen($this->manejable->getDescripcion())>350) ||
+           ($this->manejable->getStock()!=null && $this->manejable->getStock()<0) || 
+           (($this->manejable->getStock()!=null && $this->manejable->getPrestado()!=null)
+                   && ($this->manejable->getStock()<$this->manejable->getPrestado())) || 
+           ($this->manejable->getPrecio()!=null && $this->manejable->getPrecio()<0))
+                $integro = false;
+        return $integro;
+    }
+    
+    public function integridadLibro(){
+        $integro = true;
+        if(($this->manejable->getAutores()!=null && strlen($this->manejable->getAutores())>40) ||
+           ($this->manejable->getEditorial()!=null && strlen($this->manejable->getEditorial())>20) ||
+           ($this->manejable->getMateria()!=null && strlen($this->manejable->getMateria())>20))
+                $integro = false;
+        return $integro;
+    }
+    
+    public function integridadVideo(){
+        $integro = true;
+        if(($this->manejable->getDirector()!=null && strlen($this->manejable->getDirector())>30) ||
+           ($this->manejable->getProductor()!=null && strlen($this->manejable->getProductor())>30))
+                $integro = false;
+        return $integro;
     }
 }
 ?>

@@ -16,6 +16,15 @@
         </div>
         <div id="menu">
             <form id="form_rtransaccion" action="../../controlador/resolucion_peticiones.php" method="post">
+                <p>Sucursal</p>
+                <select name="sucursal">
+                    <option value="Chapinero">Chapinero</option>
+                    <option value="AV Rojas">AV Rojas</option>
+                    <option value="Suba">Suba</option>
+                    <option value="Autonorte">Autonorte</option>
+                </select>
+                <br>
+                <br>
                 <table id="cliente" border="1">
                     <tr>
                         <th>Nombre</th>

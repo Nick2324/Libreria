@@ -14,9 +14,9 @@
             <form action="../../controlador/resolucion_peticiones.php" method="post">
                 <p>¿Está segur de cambiar el estado del producto?</p><br>
                 <p>Id producto </p>
-                <input type="text" name="id_producto" readonly/><br>
+                <input type="text" name="id" readonly/><br>
                 <p>Inventario producto </p>
-                <input type="text" name="inventario_producto" readonly/><br>
+                <input type="text" name="inventario" readonly/><br>
                 <a href="resultado_consulta_productos.php">
                     <input type="button" value="No" onclick="eliminarElementoCambio('producto')"/>
                 </a>

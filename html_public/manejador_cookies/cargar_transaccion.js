@@ -3,6 +3,7 @@ function cargarEstadoTransaccion(){
     cargarCliente();
     cargarProductos();
     cargarElementoPago();
+    cargarSucursal();
 }
 
 function cargarCliente(){
@@ -10,7 +11,6 @@ function cargarCliente(){
     if(cliente!=null){
         var tablaCliente=document.getElementById("cliente").tBodies[0];
         var valorTabla=new Array();
-
         for(var i=0;i<tablaCliente.rows.length; i++)
             valorTabla[i] = document.createElement("th");
         valorTabla[0].innerHTML=cliente.nombre;
@@ -71,6 +71,16 @@ function cargarElementoPago(){
     var seleccion = document.getElementById("forma_pago");
     for(var i = 0;i < seleccion.options.length; i++)
         if(seleccion.options[i].getAttribute("value") == elementoPago){
+            seleccion.options[i].selected = true;
+            break;
+        }
+}
+
+function cargarSucursal(){
+    var sucursal = readCookie("sucursal");
+    var seleccion = document.getElementsByName("sucursal")[0];
+    for(var i=0;i<seleccion.options.length;i++)
+        if(seleccion.options[i].getAttribute("value") == sucursal){
             seleccion.options[i].selected = true;
             break;
         }

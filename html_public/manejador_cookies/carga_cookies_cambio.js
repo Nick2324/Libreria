@@ -33,8 +33,8 @@ function cargarElementoCambio(tipoCookie){
     var id, estado;
     var objeto = eval("("+decode(readCookie(tipoCookie+"_cambio"))+")");
     if(tipoCookie == "producto"){
-        var id = document.getElementsByName("id_producto")[0];
-        var estado = document.getElementsByName("inventario_producto")[0];
+        var id = document.getElementsByName("id")[0];
+        var estado = document.getElementsByName("inventario")[0];
         id.setAttribute("value",objeto.id);
         estado.setAttribute("value",objeto.inventario);
     }else if(tipoCookie == "usuario"){

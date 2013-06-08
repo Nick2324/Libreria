@@ -89,9 +89,18 @@
     }else if(substr_count($_SERVER['HTTP_REFERER'],"consultar_usuarios.php") != 0){
         echo 'consultando usuario';
     }else if(substr_count($_SERVER['HTTP_REFERER'],"cambiar_estado_producto.php") != 0){
-        echo "=P <br>";
-        print_r($_POST);
-        echo $_POST['id_producto'];
-        echo $_POST['inventario_producto'];
+        $manejadorProductos = new ManejadorProductos;
+        $manejadorProductos->construirManejable($_POST);
+        if($manejadorProductos->cambiarEstadoProducto())
+            echo "cambiado correctamente!!";
+        else
+            echo "no pudo ser cambiado =(";
+    }else if(substr_count($_SERVER['HTTP_REFERER'],"modificar_producto.php") != 0){
+        $manejadorProductos = new ManejadorProductos;
+        $manejadorProductos->construirManejable($_POST);
+        if($manejadorProductos->actualizarProducto())
+            echo "se actualizo correctamente!!";
+        else
+            echo "No se actualizo ='(";
     }
 ?>

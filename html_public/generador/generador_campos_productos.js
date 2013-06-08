@@ -23,12 +23,7 @@ function generadorCamposLibro(formulario){
     var label = new Array();
     var campos = new Array();
     camposInput(label,campos);
-    var select = "<option>Ciencia</option>" + 
-            "<option>Literatura</option>" +
-            "<option>Arte</option>";
-    campos[0] = document.createElement("select");
-    campos[0].setAttribute("name","genero");
-    campos[0].innerHTML = select;
+    campos[0] = crearSelector("genero",["Seleccion","Ciencia","Arte","Literatura"]);
     campos[1].setAttribute("type","text");
     campos[1].setAttribute("name","autor");
     campos[1].setAttribute("placeholder","Autor");
@@ -50,11 +45,7 @@ function generadorCamposVideo(formulario){
     var label = new Array();
     var campos = new Array();
     camposInput(label,campos);
-    var select = "<option>Pelicula</option>" + 
-            "<option>Documental</option>";
-    campos[0] = document.createElement("select");
-    campos[0].setAttribute("name","tipo");
-    campos[0].innerHTML = select;
+    campos[0]=crearSelector("tipo",["Seleccion","Pelicula","Documental"]);
     campos[1].setAttribute("type","text");
     campos[1].setAttribute("name","director");
     campos[1].setAttribute("placeholder","Director");

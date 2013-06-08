@@ -14,3 +14,4 @@ createCookie("cliente",'{"nombre":"Nicolas","identificacion":"1018453546",'+
 '"correoElectronico":"nicolas.2324@gmail.com","direccion":"NN",'+
 '"telefono":"6050706","tipoAfiliacion":"NN"}',1);
 createCookie("elementoPago","credito",1);
+createCookie("sucursal","AV Rojas",1);

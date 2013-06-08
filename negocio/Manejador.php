@@ -8,7 +8,6 @@ abstract class Manejador{
     
     protected $conexion;
     protected $manejable;
-    protected $manejableCambio;
             
     function __construct(){}
 
@@ -24,8 +23,6 @@ abstract class Manejador{
     }
 
     public abstract function construirManejable($partes);
-
-    public abstract function construirManejableCambio($partes);
     
     public function generarId($tabla){
         $this->abrirConexion();
@@ -36,10 +33,6 @@ abstract class Manejador{
     
     public function getManejable(){
         return $this->manejable;
-    }
-    
-    public function getManejableCambio(){
-        return $this->manejableCambio;
     }
 
     public function update($tabla,$av){
@@ -57,7 +50,7 @@ abstract class Manejador{
         $query = substr($query,0,-1);
         $query = $query." WHERE ".$av[0][0]."='".$av[1][0]."'";
         echo $query."<br>";
-        //$resultado = mysql_query($query);
+        $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
     }
@@ -85,6 +78,15 @@ abstract class Manejador{
             $query = substr($query,0,-3);
         }
         echo $query."<br>";
+        $resultado = mysql_query($query);
+        $this->cerrarConexion();
+        return $resultado;
+    }
+    
+    public function delete($tabla,$av){
+        $this->abrirConexion();
+        $query = "DELETE FROM `$tabla` WHERE ".$av[0][0]."='".$av[1][0]."'";
+        echo "<br>".$query." QUERY DELETE<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
