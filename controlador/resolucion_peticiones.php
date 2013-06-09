@@ -4,10 +4,12 @@
     require_once ('../negocio/RegistradorTransacciones.php');
     require_once ('../negocio/ManejadorProductos.php');
     require_once ('../negocio/ManejadorUsuarios.php');
+    require_once ('../negocio/ManejadorPrestamos.php');
     
     use Manejadores\RegistradorTransacciones;
     use Manejadores\ManejadorProductos;
     use Manejadores\ManejadorUsuarios;
+    use Manejadores\ManejadorPrestamos;
     use Productos\Video;
     use Productos\Libro;
     use Usuarios\Cliente;
@@ -18,7 +20,7 @@
         $manejadorTransacciones = new RegistradorTransacciones;
         $manejadorTransacciones->construirManejable($_POST);
         if($manejadorTransacciones->registrarTransaccion())
-            echo "Transaccion realizada con éxito!";
+            echo "Transaccion realizada con exito!";
         else
             echo "Transaccion paila!!";
     }else if(substr_count($_SERVER['HTTP_REFERER'],"aniadir_producto.php") != 0){
@@ -79,8 +81,13 @@
         $manejadorProductos = new ManejadorProductos;
         $manejadorProductos->construirManejable($_POST);
         $buscado = $manejadorProductos->buscarProducto();
-    }else if(substr_count($_SERVER['HTTP_REFERER'],"ingreso_id_transaccion.php") != 0){
-        echo 'ingresando id transaccion..';
+    }else if(substr_count($_SERVER['HTTP_REFERER'],"condonar_prestamo.php") != 0){
+        $manejadorPrestamos = new ManejadorPrestamos;
+        $manejadorPrestamos->construirManejable($_POST);
+        if($manejadorPrestamos->condonarPrestamo())
+            echo "prestamo eliminado con exito";
+        else
+            echo "no pude con el prestamo ='(";
     }else if(substr_count($_SERVER['HTTP_REFERER'],"crear_usuario.php") != 0){
         $manejadorUsuarios = new ManejadorUsuarios();
         $manejadorUsuarios->construirManejable($_POST);

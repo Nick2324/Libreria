@@ -89,8 +89,20 @@ abstract class Manejador{
     
     public function delete($tabla,$av){
         $this->abrirConexion();
-        $query = "DELETE FROM `$tabla` WHERE ".$av[0][0]."='".$av[1][0]."'";
-        #echo "<br>".$query." QUERY DELETE<br>";
+        $query = "DELETE FROM `$tabla` WHERE ";
+        for($i=0;$i<count($av[0]);$i++){
+            if($av[1][$i]!=null){
+                    if(substr_count($av[0][$i],"f_")>0)
+                        $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATE) ";
+                    else if(substr_count($av[0][$i],"dt_")>0)
+                        $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATETIME) ";
+                    else
+                        $query = $query." ".$av[0][$i]."="."'".$av[1][$i]."' ";
+                    $query = $query."AND";
+                }
+        }
+        $query = substr($query,0,-3);
+        echo "<br>".$query." QUERY DELETE<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;

@@ -13,15 +13,18 @@ require_once ('Transaccion.php');
 require_once ('Manejador.php');
 require_once ('ManejadorUsuarios.php');
 require_once ('ManejadorProductos.php');
+require_once ('ManejadorPrestamos.php');
 
 class RegistradorTransacciones extends Manejador{
     
     private $manejadorUsuarios;
     private $manejadorProductos;
+    private $manejadorPrestamos;
 
     public function __construct(){
         $this->manejadorUsuarios = new ManejadorUsuarios;
         $this->manejadorProductos = new ManejadorProductos;
+        $this->manejadorPrestamos = new ManejadorPrestamos;
     }
 
     function __destruct(){}
@@ -54,6 +57,11 @@ class RegistradorTransacciones extends Manejador{
                 $prestado = $this->manejable->getCantidadProductos()[$i] + $this->manejable->getProductos()[$i]->getPrestado();
                 $partes = array("id"=>$this->manejable->getProductos()[$i]->getId(),
                     "prestado"=>$prestado);
+                $this->manejadorPrestamos->construirManejable(array("id_cliente"=>$this->manejable->getCliente()->getTipoUsuarios()[1]->getIdCliente(),
+                    "id_transaccion"=>$this->manejable->getId(),
+                    "id_producto"=>$this->manejable->getProductos()[$i]->getId(),
+                    "prestado"=>$this->manejable->getCantidadProductos()[$i]));
+                $this->manejadorPrestamos->adicionarPrestamo();
             }
             $this->manejadorProductos->construirManejable($partes);
             $resultado = $this->manejadorProductos->actualizarProducto();
@@ -147,6 +155,14 @@ class RegistradorTransacciones extends Manejador{
         $resultado = mysql_fetch_array(mysql_query($query))[0][0];
         $this->cerrarConexion();
         return $resultado;
+    }
+    
+    public function getManejadorProductos(){
+        return $this->manejadorProductos;
+    }
+    
+    public function getManejadorUsuarios(){
+        return $this->manejadorUsuarios;
     }
 }
 ?>
