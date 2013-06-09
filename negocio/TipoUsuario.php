@@ -6,18 +6,18 @@ require_once ('Usuario.php');
 
 use Usuarios;
 
-class TipoUsuario{
+class TipoUsuario implements \JsonSerializable{
 
-    private $id;
-    private $nombreUsuario;
-    private $contrasenia;
+    protected $idPerfil;
+    protected $nombreUsuario;
+    protected $contrasenia;
 
     function __construct(){}
 
     function __destruct(){}
     
-    public function getId(){
-        return $this->id;
+    public function getIdPerfil(){
+        return $this->idPerfil;
     }
     
     public function getNombreUsuario(){
@@ -28,8 +28,8 @@ class TipoUsuario{
         return $this->contrasenia;
     }
     
-    public function setId($id){
-        $this->id = $id;
+    public function setIdPerfil($id){
+        $this->idPerfil = $id;
     }
     
     public function setNombreUsuario($nombreUsuario){
@@ -38,6 +38,12 @@ class TipoUsuario{
     
     public function setContrasenia($contrasenia){
         $this->contrasenia = $contrasenia;
+    }
+
+    public function jsonSerialize() {
+        return ["idPerfil"=>$this->idPerfil,
+            "nombreUsuario"=>$this->nombreUsuario,
+            "contrasenia"=>  $this->contrasenia];
     }
 }
 

@@ -4,19 +4,19 @@ namespace Productos;
 
 use Productos;
 
-class Producto{
+class Producto implements \JsonSerializable{
 
-    private $id;
-    private $descripcion;
-    private $transaccionalidad;
-    private $fechaEdicion;
-    private $formato;
-    private $idioma;
-    private $inventarioActivo;
-    private $nombre;
-    private $precio;
-    private $prestado;
-    private $stock;
+    protected $id;
+    protected $descripcion;
+    protected $transaccionalidad;
+    protected $fechaEdicion;
+    protected $formato;
+    protected $idioma;
+    protected $inventarioActivo;
+    protected $nombre;
+    protected $precio;
+    protected $prestado;
+    protected $stock;
 
     function __construct(){}
 
@@ -108,6 +108,20 @@ class Producto{
     
     public function setStock($stock){
         $this->stock = $stock;
+    }
+
+    public function jsonSerialize() {
+        return ["id"=>  $this->id,
+        "descripcion"=>  $this->descripcion,
+        "transaccionalidad"=>  $this->transaccionalidad,
+        "fechaEdicion"=> $this->fechaEdicion,
+        "formato"=>  $this->formato,
+        "idioma"=>  $this->idioma,
+        "inventarioActivo"=>  $this->inventarioActivo,
+        "nombre"=>  $this->nombre,
+        "precio"=>  $this->precio,
+        "prestado"=>  $this->prestado,
+        "stock"=>  $this->stock];
     }
 
 }

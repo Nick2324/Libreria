@@ -6,9 +6,9 @@ require_once ('TipoUsuario.php');
 
 use Usuarios;
 
-class Cliente extends TipoUsuario{
+class Cliente extends TipoUsuario implements \JsonSerializable{
 
-    private $idCliente;
+    protected $idCliente;
 
     function __construct(){}
 
@@ -20,6 +20,10 @@ class Cliente extends TipoUsuario{
 
     public function setIdCliente($idCliente){
         $this->idCliente = $idCliente;
+    }
+    
+    public function jsonSerialize() {
+        return array_merge(TipoUsuario::jsonSerialize(),["idCliente"=>$this->idCliente]);
     }
 
 }

@@ -23,7 +23,7 @@
                     <tr>
                         <th>Identificación</th>
                         <th></th>
-                        <th><input type="number" name="identificacion" placeholder="Identificación"/></th>
+                        <th><input type="number" name="identificacion" readonly/></th>
                     </tr>
                     <tr>
                         <th>Nombre</th>
@@ -50,6 +50,7 @@
                         <th></th>
                         <th>
                             <select name="activo">
+                                <option>Seleccion</option>
                                 <option value="activo">Activo</option>
                                 <option value="inactivo">Inactivo</option>
                             </select>

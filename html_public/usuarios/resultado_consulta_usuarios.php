@@ -4,7 +4,6 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="../manejador_cookies/cookies.js"></script>
         <script src="../generador/generadorElementosHTML"></script>
-        <script src="prueba.js"></script>
         <script src="../manejador_cookies/carga_cookies_cambio.js"></script>
         <script src="../manejador_cookies/cargar_consulta_usuarios.js"></script> 
         <script src="../manejador_cookies/eliminar_consulta_usuarios.js"></script>

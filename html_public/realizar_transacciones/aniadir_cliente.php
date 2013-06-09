@@ -11,7 +11,7 @@
         <div id="menu">
             <form action="../../controlador/resolucion_peticiones.php" method="post">
                 <p>Ingrese la identificación del cliente</p>
-                <input type="number" name="identificacion_usuario" placeholder="Identificación"/>
+                <input type="number" name="identificacion" placeholder="Identificación"/>
                 <input type="hidden" name="tipo_usuario" value="cliente"/>
                 <input type="submit" value="Añadir cliente"/>
             </form>

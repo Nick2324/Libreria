@@ -6,7 +6,7 @@ require_once ('TipoUsuario.php');
 
 use Usuarios;
 
-class Vendedor extends TipoUsuario{
+class Vendedor extends TipoUsuario implements \JsonSerializable{
 
     private $idVendedor;
 
@@ -22,5 +22,8 @@ class Vendedor extends TipoUsuario{
         $this->idVendedor = $idVendedor;
     }
 
+    public function jsonSerialize() {
+        return array_merge(TipoUsuario::jsonSerialize(),["idVendedor"=>$this->idVendedor]);
+    }
 }
 ?>

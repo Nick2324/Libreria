@@ -6,7 +6,7 @@ require_once ('Cliente.php');
 
 use Usuarios;
 
-class ClienteAfiliado extends Cliente{
+class ClienteAfiliado extends Cliente implements \JsonSerializable{
 
     private $afiliacionActiva;
     private $fechaAfiliacion;
@@ -39,5 +39,10 @@ class ClienteAfiliado extends Cliente{
         $this->tipoAfiliacion = $tipoAfiliacion;
     }
 
+    public function jsonSerialize() {
+        return array_merge(Cliente::jsonSerialize(),["afiliacionActiva"=>  $this->afiliacionActiva,
+            "fechaAfiliacion"=>$this->fechaAfiliacion,
+            "tipoAfiliacion"=>  $this->tipoAfiliacion]);
+    }
 }
 ?>

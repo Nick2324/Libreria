@@ -5,7 +5,7 @@ require_once ('Producto.php');
 
 use Productos;
 
-class Video extends Producto{
+class Video extends Producto implements \JsonSerializable{
 
     private $idVideo;
     private $director;
@@ -46,6 +46,13 @@ class Video extends Producto{
     
     public function setIdVideo($idVideo){
         $this->idVideo = $idVideo;
+    }
+    
+    public function jsonSerialize() {
+        return array_merge(Producto::jsonSerialize(),["idVideo"=> $this->idVideo,
+            "director"=> $this->director,
+            "productor"=> $this->productor,
+            "tipo"=>  $this->tipo]);
     }
 
 }

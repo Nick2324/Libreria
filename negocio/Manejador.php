@@ -102,7 +102,7 @@ abstract class Manejador{
                 }
         }
         $query = substr($query,0,-3);
-        echo "<br>".$query." QUERY DELETE<br>";
+        #echo "<br>".$query."<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;

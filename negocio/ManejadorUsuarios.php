@@ -22,13 +22,26 @@ class ManejadorUsuarios extends Manejador{
     function __destruct(){}
 
     public function actualizarUsuario(){
-        
+        if($this->manejable->getIdentificacion()!=null){
+            return $this->update("usuario", $this->generarAVUsuario());
+        }
+        return false;
     }
 
-    public function afiliarCliente(){}
-
-    public function borrarUsuario(){
-        
+    public function cambiarEstadoUsuario(){
+        if($this->manejable->getActivo()!=null &&
+           $this->manejable->getActivo() == 1)
+            $this->manejable->setActivo(2);
+        else if($this->manejable->getActivo()!=null &&
+           $this->manejable->getActivo() == 2)
+            $this->manejable->setActivo(1);
+        if($this->manejable->getIdentificacion()!=null &&
+           $this->manejable->getActivo()!=null)
+            return $this->update("usuario", $this->generarAVUsuario());
+        else{
+            echo $this->manejable->getActivo();
+            return false;
+        }
     }
 
     public function buscarUsuario(){

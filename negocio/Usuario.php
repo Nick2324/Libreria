@@ -5,7 +5,7 @@ namespace Usuarios;
 
 //use Perfiles;
 
-class Usuario{
+class Usuario implements \JsonSerializable{
 
     private $correo;
     private $direccion;
@@ -73,6 +73,16 @@ class Usuario{
 
     public function setTelefono($telefono){
         $this->telefono = $telefono;
+    }
+
+    public function jsonSerialize() {
+        return ["identificacion"=> $this->identificacion,
+            "nombre"=>  $this->nombre,
+            "correo"=>  $this->correo,
+            "direccion"=>  $this->direccion,
+            "tipoUsuarios"=> $this->tipoUsuarios,
+            "telefono"=>  $this->telefono,
+            "activo"=>$this->activo];
     }
 
 }
