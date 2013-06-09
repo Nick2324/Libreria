@@ -21,6 +21,11 @@
                 <input type="text" name="direccion" placeholder="Dirección residencia"/>
                 <p>Teléfono</p>
                 <input type="number" name="telefono" placeholder="Teléfono"/>
+                <p>Usuario activo/inactivo</p>
+                <select name="activo">
+                    <option value="activo">Activo</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
             </form>
         </div>
     </body>

@@ -8,18 +8,18 @@ use Usuarios;
 
 class Vendedor extends TipoUsuario{
 
-    private $idTrabajador;
+    private $idVendedor;
 
     function __construct(){}
 
     function __destruct(){}
 
-    public function getIdTrabajador(){
-        return $this->idTrabajador;
+    public function getIdVendedor(){
+        return $this->idVendedor;
     }
 
-    public function setIdTrabajador(int $idTrabajador){
-        $this->idTrabajador = $idTrabajador;
+    public function setIdVendedor($idVendedor){
+        $this->idVendedor = $idVendedor;
     }
 
 }

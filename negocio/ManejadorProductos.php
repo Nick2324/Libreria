@@ -27,6 +27,9 @@ class ManejadorProductos extends Manejador{
                 $this->update("producto", $this->generarParesAVProducto());
                 $this->update("video", $this->generarParesAVVideo());
                 return true;
+            }else{
+                $this->update("producto", $this->generarParesAVProducto());
+                return true;
             }
         }
         return false;

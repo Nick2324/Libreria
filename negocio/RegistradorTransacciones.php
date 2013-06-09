@@ -16,11 +16,11 @@ require_once ('ManejadorProductos.php');
 
 class RegistradorTransacciones extends Manejador{
     
-    private $manejadorClientes;
+    private $manejadorUsuarios;
     private $manejadorProductos;
 
     public function __construct(){
-        $this->manejadorClientes = new ManejadorUsuarios;
+        $this->manejadorUsuarios = new ManejadorUsuarios;
         $this->manejadorProductos = new ManejadorProductos;
     }
 
@@ -42,22 +42,33 @@ class RegistradorTransacciones extends Manejador{
     }
 
     public function registrarTransaccion(){
-        /*$resultado = $this->insert("transaccion", $this->generarAVTransaccion());
-        for($i=0;$i<count($this->manejable->getProductos()) && $resultado;$i++)
-            $resultado = $this->insert("transaccion_producto", $this->generarAVTransaccionProductos($i));*/
-        print_r($this->manejable);
-        echo "<br>";
+        $resultado = $this->insert("transaccion", $this->generarAVTransaccion());
+        for($i=0;$i<count($this->manejable->getProductos()) && $resultado;$i++){
+            $resultado = $this->insert("transaccion_producto", $this->generarAVTransaccionProductos($i));
+            $partes = null;
+            if($this->manejable->getProductos()[$i]->getTransaccionalidad()=="Venta"){
+                $stock = $this->manejable->getProductos()[$i]->getStock() - $this->manejable->getCantidadProductos()[$i];
+                $partes = array("id"=>$this->manejable->getProductos()[$i]->getId(),
+                    "stock"=>$stock);
+            }else if($this->manejable->getProductos()[$i]->getTransaccionalidad()=="Prestamo"){
+                $prestado = $this->manejable->getCantidadProductos()[$i] + $this->manejable->getProductos()[$i]->getPrestado();
+                $partes = array("id"=>$this->manejable->getProductos()[$i]->getId(),
+                    "prestado"=>$prestado);
+            }
+            $this->manejadorProductos->construirManejable($partes);
+            $resultado = $this->manejadorProductos->actualizarProducto();
+        }
         return $resultado;
     }
 
     private function construirCliente($partes){
-        echo "<br>Construyendo cliente<br>";
-        return null;
+        $this->manejadorUsuarios->construirManejable(array("identificacion"=>$partes['identificacion']));
+        return $this->manejadorUsuarios->buscarUsuario()[0];
     }
 
     private function construirVendedor($partes){
-        echo "<br>Construyendo vendedor<br>";
-        return null;
+        $this->manejadorUsuarios->construirManejable(array("identificacion"=>1));
+        return $this->manejadorUsuarios->buscarUsuario()[0];
     }
     
     private function construirProductos($partes){
@@ -100,8 +111,8 @@ class RegistradorTransacciones extends Manejador{
             7=>"`v_descuento`");
         $av[1]=array(0=>$this->manejable->getId(),
             1=>$this->manejable->getSucursal(),
-            2=>$this->manejable->getCliente()->getId(),
-            3=>$this->manejable->getVendedor()->getId(),
+            2=>$this->manejable->getCliente()->getTipoUsuarios()[1]->getIdCliente(),
+            3=>$this->manejable->getVendedor()->getTipoUsuarios()[0]->getIdVendedor(),
             4=>$this->manejable->getElementoPago(),
             5=>$this->manejable->getTiempo(),
             6=>$this->manejable->getTotal(),
@@ -118,7 +129,7 @@ class RegistradorTransacciones extends Manejador{
         $av[1]=array(0=>$this->manejable->getProductos()[$actual]->getId(),
             1=>$this->manejable->getId(),
             2=>$this->manejable->getCantidadProductos()[$actual],
-            3=>$this->manejable->getProductos[$actual]->getPrecio());
+            3=>$this->manejable->getProductos()[$actual]->getPrecio());
         return $av;
     }
     

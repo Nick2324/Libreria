@@ -14,17 +14,17 @@ function cargarCliente(){
         for(var i=0;i<tablaCliente.rows.length; i++)
             valorTabla[i] = document.createElement("th");
         valorTabla[0].innerHTML=cliente.nombre;
-        valorTabla[0].appendChild(crearHidden("nombre_cliente",cliente.nombre));
+        valorTabla[0].appendChild(crearHidden("nombre",cliente.nombre));
         valorTabla[1].innerHTML=cliente.identificacion;
-        valorTabla[1].appendChild(crearHidden("identificacion_cliente",cliente.identificacion));
+        valorTabla[1].appendChild(crearHidden("identificacion",cliente.identificacion));
         valorTabla[2].innerHTML=cliente.correoElectronico;
-        valorTabla[2].appendChild(crearHidden("correoElectronico_cliente",cliente.correoElectronico));
+        valorTabla[2].appendChild(crearHidden("correoElectronico",cliente.correoElectronico));
         valorTabla[3].innerHTML=cliente.telefono;
-        valorTabla[3].appendChild(crearHidden("telefono_cliente",cliente.telefono));
+        valorTabla[3].appendChild(crearHidden("telefono",cliente.telefono));
         valorTabla[4].innerHTML=cliente.direccion;
-        valorTabla[4].appendChild(crearHidden("direccion_cliente",cliente.direccion));
+        valorTabla[4].appendChild(crearHidden("direccion",cliente.direccion));
         valorTabla[5].innerHTML=cliente.tipoAfiliacion;
-        valorTabla[5].appendChild(crearHidden("tipoAfiliacion_cliente",cliente.tipoAfiliacion));
+        valorTabla[5].appendChild(crearHidden("tipoAfiliacion",cliente.tipoAfiliacion));
         for(var i=0;i<tablaCliente.rows.length;i++)
             tablaCliente.rows[i].appendChild(valorTabla[i]);
     }

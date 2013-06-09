@@ -23,7 +23,7 @@
                 <input type="text" name="direccion" placeholder="Dirección residencia"/>
                 <p>Teléfono</p>
                 <input type="tel" name="telefono" placeholder="Teléfono"/>
-                <p>Tipo de perfil</p>
+                <!--<p>Tipo de perfil</p>
                 <select id="tipo_perfil" onchange="generarCampos(this)">
                     <option value="no_seleccionado">Selección</option>
                     <optgroup label="Clientes">
@@ -33,7 +33,7 @@
                     <optgroup label="Tienda">
                         <option value="administrador">Admininstrador</option>
                         <option value="vendedor">Vendedor</option>
-                    </optgroup>
+                    </optgroup>-->
                 </select>
             </form>
         </div>

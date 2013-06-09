@@ -90,7 +90,7 @@ abstract class Manejador{
     public function delete($tabla,$av){
         $this->abrirConexion();
         $query = "DELETE FROM `$tabla` WHERE ".$av[0][0]."='".$av[1][0]."'";
-        echo "<br>".$query." QUERY DELETE<br>";
+        #echo "<br>".$query." QUERY DELETE<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
@@ -110,13 +110,13 @@ abstract class Manejador{
                 else if(substr_count($av[0][$i],"dt_")>0)
                     $query = $query."CAST('".$av[1][$i]."' AS DATETIME),";
                 else
-                    $query = "'".$query.$av[1][$i]."',";
+                    $query = $query."'".$av[1][$i]."',";
             }
         $query = substr($query,0,-1).")";
-        echo $query."<br>";
-        #$resultado = mysql_query($query);
+        #echo $query."<br>";
+        $resultado = mysql_query($query);
         $this->cerrarConexion();
-        return $resutado;
+        return $resultado;
     }
 }
 ?>

@@ -35,7 +35,7 @@ class ClienteAfiliado extends Cliente{
     public function setFechaAfiliacion($fechaAfiliacion){
         $this->fechaAfiliacion = $fechaAfiliacion;
     }
-    public function setTipoAfiliacion(int $tipoAfiliacion){
+    public function setTipoAfiliacion($tipoAfiliacion){
         $this->tipoAfiliacion = $tipoAfiliacion;
     }
 

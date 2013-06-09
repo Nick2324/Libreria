@@ -43,7 +43,7 @@ class Transaccion{
     }
 
     public function getCantidadProductos(){
-        return $this->cantidadProductos();
+        return $this->cantidadProductos;
     }
 
     public function getCliente(){

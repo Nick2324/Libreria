@@ -11,7 +11,7 @@ class Usuario{
     private $direccion;
     private $identificacion;
     private $nombre;
-    private $tipoUsuarios;
+    private $tipoUsuarios = array();
     private $telefono;
     private $activo;
 

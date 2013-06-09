@@ -9,8 +9,8 @@ createCookie("productos",'[{"id":"1","nombre":"Video1","stock":"10","prestado":"
 '{"id":"5","nombre":"Libro2","stock":"10","prestado":"",'+
 '"tipoProducto":"libro","transaccionalidad":"Venta","precio":"5.0"}]',1);
 createCookie("cantidad","[2,1,2,1,5]",1);
-createCookie("cliente",'{"nombre":"Nicolas","identificacion":"1018453546",'+
-'"correoElectronico":"nicolas.2324@gmail.com","direccion":"NN",'+
-'"telefono":"6050706","tipoAfiliacion":"NN"}',1);
+createCookie("cliente",'{"nombre":"Nicolas","identificacion":"1018453146",'+
+'"correoElectronico":"nicolas.2324@gmail.com","direccion":"D2",'+
+'"telefono":"6050706","tipoAfiliacion":""}',1);
 createCookie("elementoPago","credito",1);
 createCookie("sucursal","AV Rojas",1);

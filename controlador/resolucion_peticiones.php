@@ -15,8 +15,8 @@
     use Usuarios\Trabajador;
     
     if(substr_count($_SERVER['HTTP_REFERER'],"realizar_transaccion.php") != 0){
-        print_r($_POST);
         $manejadorTransacciones = new RegistradorTransacciones;
+        $manejadorTransacciones->construirManejable($_POST);
         if($manejadorTransacciones->registrarTransaccion())
             echo "Transaccion realizada con éxito!";
         else
@@ -89,7 +89,9 @@
         else
             echo "No se pudo crear!";
     }else if(substr_count($_SERVER['HTTP_REFERER'],"consultar_usuarios.php") != 0){
-        echo 'consultando usuario';
+        $manejadorUsuarios = new ManejadorUsuarios();
+        $manejadorUsuarios->construirManejable($_POST);
+        $manejadorUsuarios->buscarUsuario();
     }else if(substr_count($_SERVER['HTTP_REFERER'],"cambiar_estado_producto.php") != 0){
         $manejadorProductos = new ManejadorProductos;
         $manejadorProductos->construirManejable($_POST);
