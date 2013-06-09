@@ -13,11 +13,10 @@ function cargarConsultaUsuarios(){
         camposTabla[i][0].appendChild(crearHidden("identificacion_usuario_"+i,usuarios[i].identificacion));
         camposTabla[i][1].innerHTML = usuarios[i].nombre;
         camposTabla[i][1].appendChild(crearHidden("nombre_usuario_"+i,usuarios[i].nombre));
-        camposTabla[i][2].appendChild(crearBoton(i+"","Perfiles","guardarEstadoConsultaUsuarios()"));
-        camposTabla[i][3].appendChild(crearBoton(i+"","Modificar","guardarEstadoConsultaUsuarios()"));
-        camposTabla[i][4].appendChild(crearBoton(i+"","CambiarEstado","guardarEstadoConsultaUsuarios()"));
+        camposTabla[i][2].appendChild(crearBoton(i+"","Perfiles",""));
+        camposTabla[i][3].appendChild(crearBoton(i+"","Modificar","cargaCookiesCambio("+i+",'usuario');resolverPeticion('usuario','modificar')"));
+        camposTabla[i][4].appendChild(crearBoton(i+"","CambiarEstado","cargaCookiesCambio("+i+",'usuario');resolverPeticion('usuario','cambiarEstado')"));
         for(var j=0;j<camposTabla[i].length;j++)
             tablaUsuarios.rows[i].appendChild(camposTabla[i][j]);
     }
-    alert("cargado correctamente");
 }

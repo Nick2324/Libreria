@@ -18,9 +18,9 @@ function resolverPeticion(tipoCookie,accion){
         }
     }else if(tipoCookie == "usuario"){
         if(accion == "modificar"){
-            location.href = "";
+            location.href = "http://localhost/Libreria/html_public/usuarios/modificar_usuario.php";
         }else if(accion == "cambiarEstado"){
-            location.href = "";
+            location.href = "http://localhost/Libreria/html_public/usuarios/cambiar_estado_usuario.php";
         }
     }
 }
@@ -38,9 +38,9 @@ function cargarElementoCambio(tipoCookie){
         id.setAttribute("value",objeto.id);
         estado.setAttribute("value",objeto.inventario);
     }else if(tipoCookie == "usuario"){
-        var id = document.getElementsByName("id_producto")[0];
-        var estado = document.getElementsByName("inventario_producto")[0];
+        var id = document.getElementsByName("identificacion")[0];
+        var estado = document.getElementsByName("activo")[0];
         id.setAttribute("value",objeto.identificacion);
-        estado.setAttribute("value",objeto.estado);
+        estado.setAttribute("value",objeto.activo);
     }
 }

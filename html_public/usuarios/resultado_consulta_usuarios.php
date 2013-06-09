@@ -5,7 +5,7 @@
         <script src="../manejador_cookies/cookies.js"></script>
         <script src="../generador/generadorElementosHTML"></script>
         <script src="prueba.js"></script>
-        <script src="../manejador_cookies/guardar_consulta_usuarios.js"></script>
+        <script src="../manejador_cookies/carga_cookies_cambio.js"></script>
         <script src="../manejador_cookies/cargar_consulta_usuarios.js"></script> 
         <script src="../manejador_cookies/eliminar_consulta_usuarios.js"></script>
         <title>Consultando usuarios</title>
