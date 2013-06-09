@@ -40,8 +40,10 @@ abstract class Manejador{
         $query = "UPDATE `$tabla` SET ";
         for($i=1;$i<count($av[0]);$i++){
                 if($av[1][$i]!=null){
-                    if(substr_count($av[0][$i],"f_")!=0)
+                    if(substr_count($av[0][$i],"f_")>0)
                         $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATE) ";
+                    else if(substr_count($av[0][$i],"dt_")>0)
+                            $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATETIME) ";
                     else
                         $query = $query." ".$av[0][$i]."="."'".$av[1][$i]."' ";
                     $query = $query.",";
@@ -49,7 +51,7 @@ abstract class Manejador{
             }
         $query = substr($query,0,-1);
         $query = $query." WHERE ".$av[0][0]."='".$av[1][0]."'";
-        echo $query."<br>";
+        #echo $query."<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
@@ -68,8 +70,10 @@ abstract class Manejador{
             $query = $query." WHERE ";
             for($i=0;$i<count($av[0]);$i++){
                 if($av[1][$i]!=null){
-                    if(substr_count($av[0][$i],"f_")!=0)
+                    if(substr_count($av[0][$i],"f_")>0)
                         $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATE) ";
+                    else if(substr_count($av[0][$i],"dt_")>0)
+                        $query = $query." ".$av[0][$i]."="."CAST('".$av[1][$i]."' AS DATETIME) ";
                     else
                         $query = $query." ".$av[0][$i]."="."'".$av[1][$i]."' ";
                     $query = $query."AND";
@@ -77,7 +81,7 @@ abstract class Manejador{
             }
             $query = substr($query,0,-3);
         }
-        echo $query."<br>";
+        #echo $query."<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
@@ -90,6 +94,29 @@ abstract class Manejador{
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
+    }
+    
+    public function insert($tabla,$av){
+        $this->abrirConexion();
+        $query = "INSERT INTO `$tabla` (";
+        for($i=0;$i<count($av[0]);$i++)
+            if($av[1][$i]!=null)
+                $query = $query.$av[0][$i].",";
+        $query = substr($query,0,-1).") VALUES (";
+        for($i=0;$i<count($av[1]);$i++)
+            if($av[1][$i]!=null){
+                if(substr_count($av[0][$i],"f_")>0)
+                    $query = $query."CAST('".$av[1][$i]."' AS DATE),";
+                else if(substr_count($av[0][$i],"dt_")>0)
+                    $query = $query."CAST('".$av[1][$i]."' AS DATETIME),";
+                else
+                    $query = "'".$query.$av[1][$i]."',";
+            }
+        $query = substr($query,0,-1).")";
+        echo $query."<br>";
+        #$resultado = mysql_query($query);
+        $this->cerrarConexion();
+        return $resutado;
     }
 }
 ?>

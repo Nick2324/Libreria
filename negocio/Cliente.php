@@ -2,29 +2,25 @@
 
 namespace Usuarios;
 
-require_once ('Usuario.php');
+require_once ('TipoUsuario.php');
 
 use Usuarios;
 
-class Cliente extends Usuario{
+class Cliente extends TipoUsuario{
 
-	private $idCliente;
+    private $idCliente;
 
-	function __construct(){
-	}
+    function __construct(){}
 
-	function __destruct(){}
+    function __destruct(){}
 
-	public function calcularIdCliente(){
-	}
+    public function getIdCliente(){
+        return $this->idCliente;
+    }
 
-	public function getIdCliente(){
-            return $this->idCliente;
-	}
-
-	public function setIdCliente($idCliente){
-            $this->idCliente = $idCliente;
-	}
+    public function setIdCliente($idCliente){
+        $this->idCliente = $idCliente;
+    }
 
 }
 ?>

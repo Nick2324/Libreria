@@ -29,18 +29,25 @@ class RegistradorTransacciones extends Manejador{
 
     public function construirManejable($partes){
         $this->manejable = new Transaccion;
-        $this->manejable->setIdTransaccion($this->generarId("transaccion"));
+        $this->manejable->setId($this->generarId("transaccion"));
         $this->manejable->setCliente($this->construirCliente($partes));
+        $this->manejable->setVendedor($this->construirVendedor($partes));
         $this->manejable->setProductos($this->construirProductos($partes));
         $this->manejable->setCantidadProductos($this->construirCantidadProductos($partes));
         $this->manejable->setElementoPago($this->construirElementoPago($partes));
-        $this->manejable->calcularHoraTransaccion();
-        $this->manejable->calcularFechaTransaccion();
-        $this->manejable->calcularTotalTransaccion();
+        $this->manejable->setSucursal($this->obtenerIdSucursal($partes['sucursal']));
+        $this->manejable->calcularDescuento();
+        $this->manejable->calcularTiempo();
+        $this->manejable->calcularTotal();
     }
 
     public function registrarTransaccion(){
-        echo '<br> registrandoTransaccion..<br>';
+        /*$resultado = $this->insert("transaccion", $this->generarAVTransaccion());
+        for($i=0;$i<count($this->manejable->getProductos()) && $resultado;$i++)
+            $resultado = $this->insert("transaccion_producto", $this->generarAVTransaccionProductos($i));*/
+        print_r($this->manejable);
+        echo "<br>";
+        return $resultado;
     }
 
     private function construirCliente($partes){
@@ -54,19 +61,81 @@ class RegistradorTransacciones extends Manejador{
     }
     
     private function construirProductos($partes){
-        echo "<br>Construir productos<br>";
+        $i=0;
+        $productos = array();
+        do{
+            $id = $partes['id_producto_'."$i"];
+            if($id != null){
+                $this->manejadorProductos->construirManejable(["id" => $id]);
+                $productos[$i++]=$this->manejadorProductos->buscarProducto()[0];
+            }
+        }while($id != null);
         return $productos;
     }
 
     public function construirCantidadProductos($partes){
-        echo "<br>Construir cantidad productos<br>";
-        return $cantidadProductos;
+        $i=0;
+        $arrayCantidad = array();
+        do{
+            $cantidad = $partes['cantidad_producto_'."$i"];
+            if($cantidad != null)
+                $arrayCantidad[$i++] = $cantidad;
+        }while($cantidad != null);
+        return $arrayCantidad;
     }
     
     public function construirElementoPago($partes){
-        echo "<br>Construyendo elemento pago<br>";
-        return $partes['elementoPago'];
+        return $partes['elemento_pago'];
     }
     
+    private function generarAVTransaccion(){
+        $av = array();
+        $av[0]=array(0=>"`k_id_transaccion`",
+            1=>"`k_id_sucursal`",
+            2=>"`k_id_cliente`",
+            3=>"`k_id_vendedor`",
+            4=>"`n_elemento_pago`",
+            5=>"`dt_transaccion`",
+            6=>"`v_total_transaccion`",
+            7=>"`v_descuento`");
+        $av[1]=array(0=>$this->manejable->getId(),
+            1=>$this->manejable->getSucursal(),
+            2=>$this->manejable->getCliente()->getId(),
+            3=>$this->manejable->getVendedor()->getId(),
+            4=>$this->manejable->getElementoPago(),
+            5=>$this->manejable->getTiempo(),
+            6=>$this->manejable->getTotal(),
+            7=>$this->manejable->getDescuento());
+        return $av;
+    }
+    
+    public function generarAVTransaccionProductos($actual){
+        $av = array();
+        $av[0]=array(0=>"`k_id_producto`",
+            1=>"`k_id_transaccion`",
+            2=>"`q_producto`",
+            3=>"`v_precio_venta`");
+        $av[1]=array(0=>$this->manejable->getProductos()[$actual]->getId(),
+            1=>$this->manejable->getId(),
+            2=>$this->manejable->getCantidadProductos()[$actual],
+            3=>$this->manejable->getProductos[$actual]->getPrecio());
+        return $av;
+    }
+    
+    public function obtenerIdSucursal($nombre){
+        $this->abrirConexion();
+        $query = "SELECT `k_id_sucursal` FROM `sucursal` WHERE `n_nombre`='$nombre'";
+        $resultado = mysql_fetch_array(mysql_query($query))[0][0];
+        $this->cerrarConexion();
+        return $resultado;
+    }
+    
+    public function obtenerNombreSucursal($id){
+        $this->abrirConexion();
+        $query = "SELECT `n_nombre` FROM `sucursal` WHERE `k_id_sucursal`='$id'";
+        $resultado = mysql_fetch_array(mysql_query($query))[0][0];
+        $this->cerrarConexion();
+        return $resultado;
+    }
 }
 ?>

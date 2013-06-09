@@ -51,7 +51,7 @@
                     <input type="button" value="Cambiar cliente" onclick="guardarEstadoTransaccion()"/>
                 </a>
                 <p>Forma de pago</p>
-                <select id="forma_pago" name="forma_pago">
+                <select id="elemento_pago" name="elemento_pago">
                     <option value="efectivo">Efectivo</option>
                     <option value="credito">Tarjeta crédito</option>
                 </select>

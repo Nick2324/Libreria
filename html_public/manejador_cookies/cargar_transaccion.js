@@ -49,8 +49,11 @@ function cargarProductos(){
             valorTabla[i][0].appendChild(crearHidden("id_producto_"+i,productoActual.id));
             valorTabla[i][1].innerHTML=productoActual.nombre;
             valorTabla[i][1].appendChild(crearHidden("nombre_producto_"+i,productoActual.nombre));
-            valorTabla[i][2].innerHTML=productoActual.tipo;
-            valorTabla[i][2].appendChild(crearHidden("tipo_producto_"+i,productoActual.tipo));
+            if(productoActual.tipoProducto == "libro")
+                valorTabla[i][2].innerHTML = "Libro";
+            else if(productoActual.tipoProducto == "video")
+                valorTabla[i][2].innerHTML = "Video";
+            valorTabla[i][2].appendChild(crearHidden("tipo_producto_"+i,productoActual.tipoProducto));
             valorTabla[i][3].innerHTML=productoActual.transaccionalidad;
             valorTabla[i][3].appendChild(crearHidden("transaccionalidad_producto_"+i,productoActual.transaccionalidad));
             valorTabla[i][4].innerHTML=cantidad[i];
@@ -67,7 +70,7 @@ function cargarProductos(){
 
 function cargarElementoPago(){
     var elementoPago = readCookie("elementoPago");
-    var seleccion = document.getElementById("forma_pago");
+    var seleccion = document.getElementById("elemento_pago");
     for(var i = 0;i < seleccion.options.length; i++)
         if(seleccion.options[i].getAttribute("value") == elementoPago){
             seleccion.options[i].selected = true;

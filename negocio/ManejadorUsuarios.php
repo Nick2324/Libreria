@@ -3,12 +3,16 @@
 namespace Manejadores;
 
 require_once ('Usuario.php');
+require_once ('Cliente.php');
+require_once ('ClienteAfiliado.php');
+require_once ('Vendedor.php');
+require_once ('TipoUsuario.php');
 require_once ('Manejador.php');
 
 use Usuarios\Usuario;
 use Usuarios\Cliente;
 use Usuarios\ClienteAfiliado;
-use Usuarios\Trabajador;
+use Usuarios\Vendedor;
 use Manejadores;
 
 class ManejadorUsuarios extends Manejador{
@@ -22,15 +26,11 @@ class ManejadorUsuarios extends Manejador{
     public function afiliarCliente(){}
 
     public function borrarUsuario(){
-        $this->abrirConexion();
         
-        $this->cerrarConexion();
     }
 
     public function buscarUsuario(){
-        $arrayBusqueda = array();
-        $this->abrirConexion();
-        $this->cerrarConexion();
+        
     }
 
     public function construirManejable($partes){

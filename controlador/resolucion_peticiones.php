@@ -15,9 +15,12 @@
     use Usuarios\Trabajador;
     
     if(substr_count($_SERVER['HTTP_REFERER'],"realizar_transaccion.php") != 0){
+        print_r($_POST);
         $manejadorTransacciones = new RegistradorTransacciones;
-        $manejadorTransacciones->construirManejable($_POST);
-        $manejadorTransacciones->registrarTransaccion();
+        if($manejadorTransacciones->registrarTransaccion())
+            echo "Transaccion realizada con éxito!";
+        else
+            echo "Transaccion paila!!";
     }else if(substr_count($_SERVER['HTTP_REFERER'],"aniadir_producto.php") != 0){
         $manejadorProductos = new ManejadorProductos;
         $manejadorProductos->construirManejable();

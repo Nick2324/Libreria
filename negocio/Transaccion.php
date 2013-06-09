@@ -10,89 +10,105 @@ use Transacciones;
 use Productos;
 
 class Transaccion{
+    
+    private $id;
+    private $vendedor;
+    private $cliente;
+    private $sucursal;
+    private $elementoPago;
+    private $tiempo;
+    private $productos;
+    private $cantidadProductos;
+    private $total;
+    private $descuento;
 
-	private $cantidadProductos;
-	private $cliente;
-	private $elementoPago;
-	private $fechaTransaccion;
-	private $horaTransaccion;
-	private $idTransaccion;
-	private $productos;
-	private $totalTransaccion;
+    function __construct(){}
 
-	function __construct(){}
+    function __destruct(){}
 
-	function __destruct(){}
+    public function calcularTiempo(){
+        $this->tiempo = date("Y-m-d H:i:s");
+    }
 
-
-
-	public function calcularHoraTransaccion(){
-            $this->horaTransaccion = date("H:i:s");
-	}
-
-	public function calcularFechaTransaccion(){
-            $this->fechaTransaccion = date("Y/m/d");
-	}
-
-	public function calcularTotalTransaccion(){
-            if($this->productos != null && $this->cantidadProductos !=null){
-                $this->totalTransaccion = 0;
-                for($i = 0;$i < count($productos);$i++)
-                    $totalTransaccion += $productos[$i]->getPrecio()*$this->cantidadProductos[$i];
-            }
-	}
-
-	public function getCantidadProductos(){
-            return $this->cantidadProductos();
-	}
-
-	public function getCliente(){
-            return $this->cliente;
-	}
-
-	public function getElementoPago(){
-            return $this->elementoPago;
-	}
-
-	public function getFechaTransaccion(){
-            return $this->fechaTransaccion;
-	}
-
-	public function getHoraTransaccion(){
-            return $this->horaTransaccion;
-	}
-
-	public function getIdTransaccion(){
-            return $this->idTransaccion;
-	}
-
-	public function getProductos(){
-            return $this->productos;
-	}
-
-	public function getTotalTransaccion(){
-            return $this->totalTransaccion;
-	}
-
-        public function setIdTransaccion($idTransaccion){
-            $this->idTransaccion = $idTransaccion;
+    public function calcularTotal(){
+        if($this->productos != null && $this->cantidadProductos !=null){
+            $this->total = 0;
+            for($i = 0;$i < count($this->productos);$i++)
+                $this->total += $this->productos[$i]->getPrecio()*$this->cantidadProductos[$i];
         }
-        
-	public function setCantidadProductos($cantidadProductos){
-            $this->cantidadProductos = $cantidadProductos;
-	}
-        
-	public function setCliente($cliente){
-            $this->cliente = $cliente;
-	}
+    }
 
-	public function setElementoPago($elementoPago){
-            $this->elementoPago = $elementoPago;
-	}
+    public function calcularDescuento(){
+        $this->descuento = 0;
+    }
 
-	public function setProductos($productos){
-            $this->productos = $productos;
-	}
+    public function getCantidadProductos(){
+        return $this->cantidadProductos();
+    }
+
+    public function getCliente(){
+        return $this->cliente;
+    }
+
+    public function getElementoPago(){
+        return $this->elementoPago;
+    }
+
+    public function getTiempo(){
+        return $this->tiempo;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function getProductos(){
+        return $this->productos;
+    }
+
+    public function getTotal(){
+        return $this->total;
+    }
+
+    public function getDescuento(){
+        return $this->descuento;
+    }
+
+    public function getSucursal(){
+        return $this->sucursal;
+    }
+    
+    public function getVendedor(){
+        return $this->vendedor;
+    }
+    
+    public function setVendedor($vendedor){
+        $this->vendedor = $vendedor;
+    }
+
+    public function setSucursal($sucursal){
+        $this->sucursal = $sucursal;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+    }
+
+    public function setCantidadProductos($cantidadProductos){
+        $this->cantidadProductos = $cantidadProductos;
+    }
+
+    public function setCliente($cliente){
+        $this->cliente = $cliente;
+    }
+
+    public function setElementoPago($elementoPago){
+        $this->elementoPago = $elementoPago;
+    }
+
+    public function setProductos($productos){
+        $this->productos = $productos;
+    }
 
 }
 ?>

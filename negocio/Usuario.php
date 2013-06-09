@@ -11,8 +11,9 @@ class Usuario{
     private $direccion;
     private $identificacion;
     private $nombre;
-    //private $perfil;
+    private $tipoUsuarios;
     private $telefono;
+    private $activo;
 
     function __construct(){}
 
@@ -30,16 +31,28 @@ class Usuario{
         return $this->identificacion;
     }
 
-    public function getManejadores(){}
-
     public function getNombre(){
         return $this->nombre;
     }
 
-    public function getPerfil(){}
-
     public function getTelefono(){
         return $this->telefono;
+    }
+    
+    public function getTipoUsuarios(){
+        return $this->tipoUsuarios;
+    }
+    
+    public function getActivo(){
+        return $this->activo;
+    }
+    
+    public function setActivo($activo){
+        $this->activo = $activo;
+    }
+    
+    public function setTipoUsuarios($tipoUsuarios){
+        $this->tipoUsuarios = $tipoUsuarios;
     }
 
     public function setCorreo($correo){
@@ -54,13 +67,9 @@ class Usuario{
         $this->identificacion = $identificacion;
     }
 
-    public function setManejadores($manejadores){}
-
     public function setNombre($nombre){
         $this->nombre = $nombre;
     }
-
-    public function setPerfil($perfil){}
 
     public function setTelefono($telefono){
         $this->telefono = $telefono;

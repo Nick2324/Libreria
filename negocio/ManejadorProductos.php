@@ -70,8 +70,6 @@ class ManejadorProductos extends Manejador{
                 $coincidencias[$i] = $resultado[0];
             }
         }
-        echo '<br>asi es como quedan al final final: <br>';
-        print_r($coincidencias);
         return $coincidencias;
     }
 
