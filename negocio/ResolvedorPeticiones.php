@@ -41,57 +41,63 @@ class ResolvedorPeticiones{
             else
                 return $this->construirMensaje ("Transaccion no ha podido realizarse con exito","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"aniadir_producto.php") != 0){
-            $this->manejadorProductos = new ManejadorProductos;
-            $this->manejadorProductos->construirManejable($_POST);
-            $productoNuevo = $this->manejadorProductos->buscarProducto()[0];
-            if($productoNuevo != null && $productoNuevo->getInventarioActivo()!="Inactivo"){
-                $cantidadValida = true;
-                if($_POST['cantidad_producto']>0){
-                    if($productoNuevo->getTransaccionalidad()=="Prestamo"){
-                        if($productoNuevo->getStock()-$productoNuevo->getPrestado()<$_POST['cantidad_producto'])
-                            $cantidadValida = false;
-                    }else if($productoNuevo->getTransaccionalidad()=="Venta")
-                        if($productoNuevo->getStock()<$_POST['cantidad_producto'])
-                            $cantidadValida = false;
-                }else
-                    $cantidadValida = false;
-                if($cantidadValida){
-                    $productos = json_decode($_COOKIE['productos']);
-                    $encontrado = false;
-                    if($productos==null)
-                        $productos=array();
-                    for($i=0;$i<count($productos);$i++)
-                        if($productos[$i]->id == $productoNuevo->getId()){
-                            $encontrado=true;
-                            break;
-                        }
-                    if(!$encontrado){
-                        $productos = array_merge($productos,array('0'=>$productoNuevo));
-                        if($_COOKIE['cantidad']!=null)
-                            $cantidad = array_merge(json_decode($_COOKIE['cantidad']),array('0'=>$_POST['cantidad_producto']));
-                        else
-                            $cantidad = array('0'=>$_POST['cantidad_producto']);
-                        setcookie("productos",json_encode($productos),time()+13600*24, "/");
-                        setcookie("cantidad",json_encode($cantidad),time()+13600*24, "/");
-                        return $this->construirMensaje("Producto adicionado con exito","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+            if($_POST['id'] && $_POST['cantidad_producto']){
+                $this->manejadorProductos = new ManejadorProductos;
+                $this->manejadorProductos->construirManejable($_POST);
+                $productoNuevo = $this->manejadorProductos->buscarProducto()[0];
+                if($productoNuevo != null && $productoNuevo->getInventarioActivo()!="Inactivo"){
+                    $cantidadValida = true;
+                    if($_POST['cantidad_producto']>0){
+                        if($productoNuevo->getTransaccionalidad()=="Prestamo"){
+                            if($productoNuevo->getStock()-$productoNuevo->getPrestado()<$_POST['cantidad_producto'])
+                                $cantidadValida = false;
+                        }else if($productoNuevo->getTransaccionalidad()=="Venta")
+                            if($productoNuevo->getStock()<$_POST['cantidad_producto'])
+                                $cantidadValida = false;
                     }else
-                        return $this->construirMensaje ("Producto ya se encuentra en transaccion","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                        $cantidadValida = false;
+                    if($cantidadValida){
+                        $productos = json_decode($_COOKIE['productos']);
+                        $encontrado = false;
+                        if($productos==null)
+                            $productos=array();
+                        for($i=0;$i<count($productos);$i++)
+                            if($productos[$i]->id == $productoNuevo->getId()){
+                                $encontrado=true;
+                                break;
+                            }
+                        if(!$encontrado){
+                            $productos = array_merge($productos,array('0'=>$productoNuevo));
+                            if($_COOKIE['cantidad']!=null)
+                                $cantidad = array_merge(json_decode($_COOKIE['cantidad']),array('0'=>$_POST['cantidad_producto']));
+                            else
+                                $cantidad = array('0'=>$_POST['cantidad_producto']);
+                            setcookie("productos",json_encode($productos),time()+13600*24, "/");
+                            setcookie("cantidad",json_encode($cantidad),time()+13600*24, "/");
+                            return $this->construirMensaje("Producto adicionado con exito","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                        }else
+                            return $this->construirMensaje ("Producto ya se encuentra en transaccion","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                    }else
+                        return $this->construirMensaje("Cantidad de producto no valida","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
                 }else
-                    return $this->construirMensaje("Cantidad de producto no valida","http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
-            }else
-                return $this->construirMensaje('No se encuentra producto asociado al id proporcionado\n o esta inactivo',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                    return $this->construirMensaje('No se encuentra producto asociado al id proporcionado\n o esta inactivo',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+            }
+            return $this->construirMensaje('No se ha ingresado id o cantidad de producto',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"aniadir_cliente.php") != 0){
-            $this->manejadorUsuarios = new ManejadorUsuarios;
-            $this->manejadorUsuarios->construirManejable($_POST);
-            $cliente = $this->manejadorUsuarios->buscarUsuario()[0];
-            if($cliente != null && $cliente->getTipoUsuarios()[1]!=null){
-                if($cliente->getActivo()!="inactivo"){
-                    setcookie("cliente",json_encode($cliente),time()+13600*24, "/");
-                    return $this->construirMensaje('Cliente adicionado con exito',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+            if($_POST['identificacion']!=null){
+                $this->manejadorUsuarios = new ManejadorUsuarios;
+                $this->manejadorUsuarios->construirManejable($_POST);
+                $cliente = $this->manejadorUsuarios->buscarUsuario()[0];
+                if($cliente != null && $cliente->getTipoUsuarios()[1]!=null){
+                    if($cliente->getActivo()!="inactivo"){
+                        setcookie("cliente",json_encode($cliente),time()+13600*24, "/");
+                        return $this->construirMensaje('Cliente adicionado con exito',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                    }else
+                        return $this->construirMensaje ("El cliente esta inactivo", "http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
                 }else
-                    return $this->construirMensaje ("El cliente esta inactivo", "http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
-            }else
-                return $this->construirMensaje ('No se encuentra cliente con la identificacion proporcionada',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+                    return $this->construirMensaje ('No se encuentra cliente con la identificacion proporcionada',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
+            }
+            return $this->construirMensaje ('No ha ingresado ninguna identificacion',"http://localhost/Libreria/html_public/realizar_transacciones/realizar_transaccion.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"crear_producto.php") != 0){
             $this->manejadorProductos = new ManejadorProductos;
             $this->manejadorProductos->construirManejable($_POST);
