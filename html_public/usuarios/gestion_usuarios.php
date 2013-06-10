@@ -15,6 +15,9 @@
             <a href="consultar_usuarios.php">
                 <input type="button" name="consultar_usuarios" value="Consultar usuarios"/>
             </a>
+            <a href="../inicio/">
+                <input type="button" value="Volver"/>
+            </a>
         </div>
     </body>
 </html>

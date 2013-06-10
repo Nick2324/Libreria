@@ -9,6 +9,9 @@
             <h1>Condonar prestamo</h1>
         </div>
         <div id="menu">
+            <a href="gestion_transacciones.php">
+                <input type="button" value="Volver"/>
+            </a>
             <form action="../../controlador/resolucion_peticiones.php" method="post">
                 <p>Id de la transaccion</p>
                 <input type="number" name="id_transaccion" placeholder="Id de transacción"/>

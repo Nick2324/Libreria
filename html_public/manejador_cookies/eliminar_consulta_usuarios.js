@@ -1,3 +1,3 @@
-function eliminarConsulaUsuarios(){
+function eliminarConsultaUsuarios(){
     eraseCookie("usuarios");
 }

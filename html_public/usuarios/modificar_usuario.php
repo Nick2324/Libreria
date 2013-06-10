@@ -14,6 +14,9 @@
         <div id="menu">
             <form id="form_usuarios" action="../../controlador/resolucion_peticiones.php" method="post">
                 <input type="submit" value="Modificar usuario"/>
+                <a href="resultado_consulta_usuarios.php">
+                    <input type="button" value="Volver"/>
+                </a>
                 <table id="usuario_cambio" border="1">
                     <tr>
                         <th>Atributos</th>

@@ -9,11 +9,14 @@
         <script src="../manejador_cookies/carga_cookies_cambio.js"></script>
         <title>Consultando productos</title>
     </head>
-    <body onload="cargarEstadoConsultaProductos()">
+    <body onload="cargarEstadoConsultaProductos();eliminarElementoCambio('producto')">
         <div id="header">
             <h1>Resultado de la consulta de productos</h1>
         </div>
         <div id="menu">
+            <a href="consultar_productos.php">
+                <input type="button" value="Volver" onclick="eliminarConsultaProductos()"/>
+            </a>
             <table id="productos" border="1">
                 <thead>
                     <tr>

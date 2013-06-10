@@ -2,6 +2,7 @@ function eliminarDatosTransaccion(){
     eliminarDatosCliente();
     eliminarDatosProducto();
     eliminarDatosElementoPago();
+    eliminarDatosSucursal();
 }
 
 function eliminarDatosCliente(){
@@ -16,4 +17,8 @@ function eliminarDatosProducto(){
 
 function eliminarDatosElementoPago(){
     eraseCookie("elementoPago");
+}
+
+function eliminarDatosSucursal(){
+    eraseCookie("sucursal");
 }

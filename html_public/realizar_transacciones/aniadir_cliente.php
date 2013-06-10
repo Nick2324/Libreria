@@ -15,6 +15,9 @@
                 <input type="hidden" name="tipo_usuario" value="cliente"/>
                 <input type="submit" value="Añadir cliente"/>
             </form>
+            <a href="realizar_transaccion.php">
+                <input type="button" value="Volver"/>
+            </a>
         </div>
     </body>
 </html>

@@ -121,30 +121,66 @@ class ResolvedorPeticiones{
         }else if(substr_count($_SERVER['HTTP_REFERER'],"cambiar_estado_usuario.php") != 0){
             $this->manejadorUsuarios = new ManejadorUsuarios();
             $this->manejadorUsuarios->construirManejable($_POST);
-            if($this->manejadorUsuarios->cambiarEstadoUsuario())
+            setCookie("usuario_cambio","",-1,"/");
+            if($this->manejadorUsuarios->cambiarEstadoUsuario()){
+                $usuarios = json_decode($_COOKIE['usuarios']);
+                $cambio = $this->manejadorUsuarios->buscarUsuario()[0];
+                for($i=0;$i<count($usuarios);$i++)
+                    if($usuarios[$i]->identificacion == $cambio->getIdentificacion()){
+                        $usuarios[$i] = $cambio;
+                        break;
+                    }
+                setCookie("usuarios",json_encode($usuarios),time()+13600*24, "/");
                 return $this->construirMensaje ("Cambio realizado con exito","http://localhost/Libreria/html_public/usuarios/resultado_consulta_usuarios.php");
-            else
+            }else
                 return $this->construirMensaje ("No se ha podido realizar el cambio","http://localhost/Libreria/html_public/usuarios/resultado_consulta_usuarios.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"modificar_usuario.php") != 0){
             $this->manejadorUsuarios = new ManejadorUsuarios();
             $this->manejadorUsuarios->construirManejable($_POST);
-            if($this->manejadorUsuarios->actualizarUsuario())
+            setCookie("usuario_cambio","",-1,"/");
+            if($this->manejadorUsuarios->actualizarUsuario()){
+                $usuarios = json_decode($_COOKIE['usuarios']);
+                $cambio = $this->manejadorUsuarios->buscarUsuario()[0];
+                for($i=0;$i<count($usuarios);$i++)
+                    if($usuarios[$i]->identificacion == $cambio->getIdentificacion()){
+                        $usuarios[$i] = $cambio;
+                        break;
+                    }
+                setCookie("usuarios",json_encode($usuarios),time()+13600*24, "/");
                 return $this->construirMensaje ("Cambio realizado con exito","http://localhost/Libreria/html_public/usuarios/resultado_consulta_usuarios.php");
-            else
+            }else
                 return $this->construirMensaje ("No se ha podido realizar el cambio","http://localhost/Libreria/html_public/usuarios/resultado_consulta_usuarios.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"cambiar_estado_producto.php") != 0){
             $this->manejadorProductos = new ManejadorProductos;
             $this->manejadorProductos->construirManejable($_POST);
-            if($this->manejadorProductos->cambiarEstadoProducto())
+            setCookie("producto_cambio","",-1,"/");
+            if($this->manejadorProductos->cambiarEstadoProducto()){
+                $productos = json_decode($_COOKIE['productos']);
+                $cambio = $this->manejadorProductos->buscarProducto()[0];
+                for($i=0;$i<count($productos);$i++)
+                    if($productos[$i]->id == $cambio->getId()){
+                        $productos[$i] = $cambio;
+                        break;
+                    }
+                setCookie("productos",json_encode($productos),time()+13600*24, "/");
                 return $this->construirMensaje ("Cambio realizado con exito","http://localhost/Libreria/html_public/productos/resultado_consulta_productos.php");
-            else
+            }else
                 return $this->construirMensaje ("No se ha podido realizar el cambio","http://localhost/Libreria/html_public/productos/resultado_consulta_productos.php");
         }else if(substr_count($_SERVER['HTTP_REFERER'],"modificar_producto.php") != 0){
             $this->manejadorProductos = new ManejadorProductos;
             $this->manejadorProductos->construirManejable($_POST);
-            if($this->manejadorProductos->actualizarProducto())
+            setCookie("producto_cambio","",-1,"/");
+            if($this->manejadorProductos->actualizarProducto()){
+                $productos = json_decode($_COOKIE['productos']);
+                $cambio = $this->manejadorProductos->buscarProducto()[0];
+                for($i=0;$i<count($productos);$i++)
+                    if($productos[$i]->id == $cambio->getId()){
+                        $productos[$i] = $cambio;
+                        break;
+                    }
+                setCookie("productos",json_encode($productos),time()+13600*24, "/");
                 return $this->construirMensaje ("Cambio realizado con exito","http://localhost/Libreria/html_public/productos/resultado_consulta_productos.php");
-            else
+            }else
                 return $this->construirMensaje ("No se ha podido realizar el cambio","http://localhost/Libreria/html_public/productos/resultado_consulta_productos.php");
         }
     }

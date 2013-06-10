@@ -5,6 +5,7 @@
         <title>Realizar transaccion</title>
         <script src="../manejador_cookies/cookies.js"></script>
         <script src="../generador/generadorElementosHTML.js"></script>
+        <script src="../manejador_cookies/guardar_transaccion.js"></script>
         <script src="../manejador_cookies/cargar_transaccion.js"></script>
         <script src="../manejador_cookies/eliminar_transaccion.js"></script>
         <script src="eliminar_producto.js"></script>
@@ -15,9 +16,12 @@
             <h1>Realizar transacción</h1>
         </div>
         <div id="menu">
+            <a href="../inicio">
+                <input type="button" value="Volver" onclick="eliminarDatosTransaccion()"/>
+            </a>
             <form id="form_rtransaccion" action="../../controlador/resolucion_peticiones.php" method="post">
                 <p>Sucursal</p>
-                <select name="sucursal">
+                <select id="sucursal" name="sucursal">
                     <option value="Chapinero">Chapinero</option>
                     <option value="AV Rojas">AV Rojas</option>
                     <option value="Suba">Suba</option>

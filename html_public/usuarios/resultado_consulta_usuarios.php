@@ -9,7 +9,7 @@
         <script src="../manejador_cookies/eliminar_consulta_usuarios.js"></script>
         <title>Consultando usuarios</title>
     </head>
-    <body onload="cargarConsultaUsuarios()">
+    <body onload="cargarConsultaUsuarios();eliminarElementoCambio('usuario')">
         <div id="header">
             <h1>Resultado de la consulta de usuarios</h1>
         </div>
@@ -27,6 +27,9 @@
                 <tbody>
                 </tbody>
             </table>
+            <a href="consultar_usuarios.php">
+                <input type="button" value="Volver" onclick="eliminarConsultaUsuarios()"/>
+            </a>
         </div>
     </body>
 </html>

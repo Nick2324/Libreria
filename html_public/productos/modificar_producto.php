@@ -14,6 +14,9 @@
         <div id="menu">
             <form action="../../controlador/resolucion_peticiones.php" method="post">
                 <input type="submit" value="Modificar"/>
+                <a href="resultado_consulta_productos.php">
+                    <input type="button" value="Volver"/>
+                </a>
                 <table id="producto_cambio" border="1">
                     <tbody>
                         <tr>

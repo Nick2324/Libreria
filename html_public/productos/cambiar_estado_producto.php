@@ -18,7 +18,7 @@
                 <p>Inventario producto </p>
                 <input type="text" name="inventario" readonly/><br>
                 <a href="resultado_consulta_productos.php">
-                    <input type="button" value="No" onclick="eliminarElementoCambio('producto')"/>
+                    <input type="button" value="No"/>
                 </a>
                 <input type="submit" value="Si"/>
             </form>

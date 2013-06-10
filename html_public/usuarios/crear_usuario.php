@@ -11,6 +11,9 @@
         <div id="menu">
             <form id="form_usuarios" action="../../controlador/resolucion_peticiones.php" method="post">
                 <input type="submit" value="Crear usuario"/>
+                <a href="gestion_usuarios.php">
+                    <input type="button" value="Volver"/>
+                </a>
                 <p>Identificación</p>
                 <input type="number" name="identificacion" placeholder="Identificación"/>
                 <p>Nombre</p>

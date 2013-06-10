@@ -13,6 +13,9 @@
         <div id="menu">
             <form id="form_productos" action="../../controlador/resolucion_peticiones.php" method="post">
                 <input type="submit" value="Crear Producto"/>
+                <a href="gestion_productos.php">
+                    <input type="button" value="Volver"/>
+                </a>
                 <p>Nombre</p>
                 <input type="text" name="nombre" placeholder="Nombre">
                 <p>Descripción</p>

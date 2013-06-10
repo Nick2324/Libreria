@@ -1,7 +1,8 @@
 function guardarEstadoTransaccion(){
-    guardarCliente();
-    guardarProductos();
+    //guardarCliente();
+    //guardarProductos();
     guardarElementoPago();
+    guardarSucursal();
 }
 
 function guardarCliente(){
@@ -66,6 +67,15 @@ function guardarElementoPago(){
     for(var i=0;i<seleccion.options.length;i++)
         if(seleccion.options[i].selected){
             createCookie("elementoPago",seleccion.options[i].innerHTML,1);
+            break;
+        }
+}
+
+function guardarSucursal(){
+    var seleccion = document.getElementById("sucursal");
+    for(var i=0;i<seleccion.options.length;i++)
+        if(seleccion.options[i].selected){
+            createCookie("sucursal",seleccion.options[i].innerHTML,1);
             break;
         }
 }

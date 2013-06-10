@@ -15,6 +15,9 @@
             <a href="consultar_productos.php">
                 <input type="button" value="Consultar productos"/>
             </a>
+            <a href="../inicio/">
+                <input type="button" value="Volver"/>
+            </a>
         </div>
     </body>
 </html>
