@@ -36,10 +36,20 @@ class Transaccion{
             for($i = 0;$i < count($this->productos);$i++)
                 $this->total += $this->productos[$i]->getPrecio()*$this->cantidadProductos[$i];
         }
+        $actual = $this->total;
+        $this->total *= (1-$this->descuento);
+        $this->descuento = $actual - $this->total;
     }
 
     public function calcularDescuento(){
-        $this->descuento = 0;
+        if($this->cliente->getTipoUsuarios()[1] instanceof \Usuarios\ClienteAfiliado &&
+           $this->cliente->getTipoUsuarios()[1]->getTipoAfiliacion()!=null){
+            if($this->cliente->getTipoUsuarios()[1]->getTipoAfiliacion()==1)
+                $this->descuento = 0.2;
+            else
+                $this->descuento = 0.3;
+        }else
+            $this->descuento = 0;
     }
 
     public function getCantidadProductos(){

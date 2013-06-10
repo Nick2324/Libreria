@@ -36,7 +36,7 @@ function cargarElementoCambio(tipoCookie){
         var id = document.getElementsByName("id")[0];
         var estado = document.getElementsByName("inventario")[0];
         id.setAttribute("value",objeto.id);
-        estado.setAttribute("value",objeto.inventario);
+        estado.setAttribute("value",objeto.inventarioActivo);
     }else if(tipoCookie == "usuario"){
         var id = document.getElementsByName("identificacion")[0];
         var estado = document.getElementsByName("activo")[0];

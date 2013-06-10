@@ -4,6 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Crear producto</title>
         <script src="../generador/generador.js"></script>
+        <script src="../generador/generadorElementosHTML.js"></script>
         <script src="../generador/generador_campos_productos.js"></script>
     </head>
     <body>
@@ -11,18 +12,18 @@
             <h1>Crear producto</h1>
         </div>
         <div id="menu">
-            <form id="form_productos" action="../../controlador/resolucion_peticiones.php" method="post">
-                <input type="submit" value="Crear Producto"/>
-                <a href="gestion_productos.php">
+            <a href="gestion_productos.php">
                     <input type="button" value="Volver"/>
                 </a>
+            <form id="form_productos" action="../../controlador/resolucion_peticiones.php" method="post">
+                <input type="submit" value="Crear Producto"/>
                 <p>Nombre</p>
                 <input type="text" name="nombre" placeholder="Nombre">
                 <p>Descripción</p>
                 <textarea rows="10" cols="35" name="descripcion"></textarea>
                 <p>Idioma</p>
                 <select name="idioma">
-                    <option value="Español">Español</option>
+                    <option value="Espanol">Español</option>
                     <option value="Ingles">Ingles</option>
                     <option value="Frances">Frances</option>
                 </select>

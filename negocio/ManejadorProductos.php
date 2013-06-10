@@ -37,13 +37,12 @@ class ManejadorProductos extends Manejador{
     
     public function cambiarEstadoProducto(){
         $this->abrirConexion();
-        if($this->manejable->getInventarioActivo() == 1)
-            $this->manejable->setInventarioActivo(2);
-        else if($this->manejable->getInventarioActivo() == 2)
-            $this->manejable->setInventarioActivo(1);
-        $query = "UPDATE `producto` SET `i_inventario`='".$this->manejable->getInventarioActivo()."
+        if($this->manejable->getInventarioActivo() == "Activo")
+            $this->manejable->setInventarioActivo("Inactivo");
+        else if($this->manejable->getInventarioActivo() == "Inactivo")
+            $this->manejable->setInventarioActivo("Activo");
+        $query = "UPDATE `producto` SET `i_inventario`='".$this->conversionInventario()."
             ' WHERE `k_id_producto`='".$this->manejable->getId()."'";
-        echo $query."<br>";
         $resultado = mysql_query($query);
         $this->cerrarConexion();
         return $resultado;
@@ -93,10 +92,7 @@ class ManejadorProductos extends Manejador{
         $this->manejable->setStock($partes['stock']);
         $this->manejable->setFormato($this->getIdFormato($partes['formato']));
         $this->manejable->setIdioma($this->getIdIdioma($partes['idioma']));
-        if($partes['inventario']!=null && $partes['inventario']=="Activo")
-            $this->manejable->setInventarioActivo(1);
-        else if($partes['inventario']!=null && $partes['inventario']=="Inactivo")
-            $this->manejable->setInventarioActivo(2);
+        $this->manejable->setInventarioActivo($partes['inventario']);
         $this->manejable->setPrestado($partes['prestado']);
         if($this->manejable instanceof Libro){
             $this->manejable->setAutores($partes['autor']);
@@ -127,25 +123,6 @@ class ManejadorProductos extends Manejador{
                 $this->manejable->setId($this->generarId("producto")+1);
                 if($this->manejable->getTransaccionalidad()=="Prestamo")
                     $this->manejable->setPrestado(0);
-                else
-                    $this->manejable->setPrestado("NULL");
-                $query_producto = "INSERT INTO `producto` 
-                            (`k_id_producto`, `k_id_idioma`, `n_nombre`, 
-                            `i_transaccionalidad`, `i_inventario`, `n_descripcion`,
-                            `f_fecha_edicion`, `q_stock`, `v_precio`, `k_id_formato`, 
-                            `q_prestada`) 
-                            VALUES
-                            (".$this->manejable->getId().",
-                             ".$this->manejable->getIdioma().",'
-                             ".$this->manejable->getNombre()."','
-                             ".$this->manejable->getTransaccionalidad()."',
-                             ".$this->manejable->getInventarioActivo().",'
-                             ".$this->manejable->getDescripcion()."',
-                             CAST('".$this->manejable->getFechaEdicion()."' AS DATE),
-                             ".$this->manejable->getStock().",
-                             ".$this->manejable->getPrecio().",
-                             ".$this->manejable->getFormato().",
-                             ".$this->manejable->getPrestado().")";
                 if($this->manejable instanceof Libro){
                     if($this->manejable->getAutores()!=null &&
                        $this->manejable->getEditorial()!=null &&
@@ -153,17 +130,8 @@ class ManejadorProductos extends Manejador{
                        $this->manejable->getMateria()!=null  && 
                        $this->integridadLibro()){
                         $this->manejable->setIdLibro($this->generarId("libro")+1);
-                        $this->abrirConexion();
-                        $query_libro = "INSERT INTO `libro` (`k_id_producto`, 
-                            `n_genero`, `n_editorial`, `n_materia`, `id_libro`) 
-                            VALUES
-                            (".$this->manejable->getId().",'".$this->manejable->getGenero()."
-                                ','".$this->manejable->getEditorial()."','
-                                    ".$this->manejable->getMateria()."',
-                                    ".$this->manejable->getIdLibro().")";
-                        $resultado = mysql_query($query_producto) && mysql_query($query_libro);
-                        $this->cerrarConexion();
-                        return $resultado;
+                        return $this->insert("producto",$this->generarParesAVProducto())&&
+                            $this->insert("libro", $this->generarParesAVLibro());
                     }
                 }else if($this->manejable instanceof Video){
                     if($this->manejable->getProductor()!=null &&
@@ -171,21 +139,8 @@ class ManejadorProductos extends Manejador{
                        $this->manejable->getDirector()!=null &&
                        $this->integridadVideo()){
                         $this->manejable->setIdVideo($this->generarId("video")+1);
-                        $this->abrirConexion();
-                        $query_video = "INSERT INTO `video`
-                            (`id_video`, `k_id_producto`, `n_productor`,
-                            `n_director`, `n_tipo`) 
-                            VALUES 
-                            (".$this->manejable->getIdVideo().",
-                            ".$this->manejable->getId().",'
-                            ".$this->manejable->getProductor()."','
-                            ".$this->manejable->getDirector()."','
-                            ".$this->manejable->getTipo()."')";
-                        $resultado = mysql_query($query_producto);
-                        if($resultado)
-                            mysql_query($query_video);
-                        $this->cerrarConexion();
-                        return $resultado;
+                        return $this->insert("producto",$this->generarParesAVProducto())&&
+                            $this->insert("video", $this->generarParesAVVideo());
                     }
                 }
             }
@@ -229,11 +184,7 @@ class ManejadorProductos extends Manejador{
             $producto->setIdioma($this->getNombreIdioma($fila[1]));
             $producto->setNombre($fila[2]);
             $producto->setTransaccionalidad($fila[3]);
-            if($fila[4]==1)
-                $fila[4]="Activo";
-            else if($fila[4]==2)
-                $fila[4]="Inactivo";
-            $producto->setInventarioActivo($fila[4]);
+            $producto->setInventarioActivo($this->deconversionInventario($fila[4]));
             $producto->setDescripcion($fila[5]);
             $producto->setFechaEdicion($fila[6]);
             $producto->setStock($fila[7]);
@@ -329,7 +280,7 @@ class ManejadorProductos extends Manejador{
             1=>$this->manejable->getIdioma(),
             2=>$this->manejable->getNombre(),
             3=>$this->manejable->getTransaccionalidad(),
-            4=>$this->manejable->getInventarioActivo(),
+            4=>$this->conversionInventario(),
             5=>$this->manejable->getDescripcion(),
             6=>$this->manejable->getFechaEdicion(),
             7=>$this->manejable->getStock(),
@@ -399,6 +350,20 @@ class ManejadorProductos extends Manejador{
            ($this->manejable->getProductor()!=null && strlen($this->manejable->getProductor())>30))
                 $integro = false;
         return $integro;
+    }
+    
+    public function conversionInventario(){
+        if($this->manejable->getInventarioActivo()=="Activo")
+            return 1;
+        else if($this->manejable->getInventarioActivo()=="Inactivo")
+            return 2;
+    }
+    
+    public function deconversionInventario($inventario){
+        if($inventario==1)
+            return "Activo";
+        else if($inventario==2)
+            return "Inactivo";
     }
 }
 ?>

@@ -30,11 +30,11 @@ class ManejadorUsuarios extends Manejador{
 
     public function cambiarEstadoUsuario(){
         if($this->manejable->getActivo()!=null &&
-           $this->manejable->getActivo() == 1)
-            $this->manejable->setActivo(2);
+           $this->manejable->getActivo() == "activo")
+            $this->manejable->setActivo("inactivo");
         else if($this->manejable->getActivo()!=null &&
-           $this->manejable->getActivo() == 2)
-            $this->manejable->setActivo(1);
+           $this->manejable->getActivo() == "inactivo")
+            $this->manejable->setActivo("activo");
         if($this->manejable->getIdentificacion()!=null &&
            $this->manejable->getActivo()!=null)
             return $this->update("usuario", $this->generarAVUsuario());
@@ -61,10 +61,7 @@ class ManejadorUsuarios extends Manejador{
         $this->manejable->setCorreo($partes['correoElectronico']);
         $this->manejable->setTelefono($partes['telefono']);
         $this->manejable->setDireccion($partes['direccion']);
-        if($partes['activo']=="activo")
-            $this->manejable->setActivo(1);
-        else if($partes['activo']=="inactivo")
-            $this->manejable->setActivo(2);
+        $this->manejable->setActivo($partes['activo']);
     }
 
     public function crearUsuario(){
@@ -90,7 +87,7 @@ class ManejadorUsuarios extends Manejador{
             (`k_id_usuario`,`k_id_cliente`, `i_tipo_afiliacion`, 
             `i_estado_afiliacion`, `f_afiliacion`) 
             VALUES 
-            (".$this->manejable->getIdentificacion().",".$this->generarId("cliente").",'a',CURDATE())";
+            (".$this->manejable->getIdentificacion().",".$this->generarId("cliente").",'1','a',CURDATE())";
         $query_vendedor = "INSERT INTO `vendedor`
             (`k_id_vendedor`, `k_id_usuario`) 
             VALUES 
@@ -123,7 +120,7 @@ class ManejadorUsuarios extends Manejador{
             2=>$this->manejable->getCorreo(),
             3=>$this->manejable->getDireccion(),
             4=>$this->manejable->getTelefono(),
-            5=>$this->manejable->getActivo());
+            5=>$this->conversionActivo());
         return $av;
     }
     
@@ -197,7 +194,7 @@ class ManejadorUsuarios extends Manejador{
             $usuario->setCorreo($fila[2]);
             $usuario->setDireccion($fila[3]);
             $usuario->setTelefono($fila[4]);
-            $usuario->setActivo($fila[5]);
+            $usuario->setActivo($this->deconversionActivo($fila[5]));
             $coincidencias[$i++] = $usuario;
         }
         return $coincidencias;
@@ -268,6 +265,20 @@ class ManejadorUsuarios extends Manejador{
             }
         }
         return $coincidencias;
+    }
+    
+    public function conversionActivo(){
+        if($this->manejable->getActivo()=="activo")
+            return 1;
+        else if($this->manejable->getActivo()=="inactivo")
+            return 2;
+    }
+    
+    public function deconversionActivo($activo){
+        if($activo==1)
+            return "activo";
+        else if($activo==2)
+            return "inactivo";
     }
 }
 ?>

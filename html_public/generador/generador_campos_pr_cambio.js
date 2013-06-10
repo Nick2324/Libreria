@@ -8,7 +8,7 @@ function generarCamposPrCambio(){
     tablaProducto.rows[4].cells[1].innerHTML = producto_cambio.idioma;
     tablaProducto.rows[5].cells[1].innerHTML = producto_cambio.formato;
     tablaProducto.rows[6].cells[1].innerHTML = producto_cambio.transaccionalidad;
-    tablaProducto.rows[7].cells[1].innerHTML = producto_cambio.inventario;
+    tablaProducto.rows[7].cells[1].innerHTML = producto_cambio.inventarioActivo;
     tablaProducto.rows[8].cells[1].innerHTML = producto_cambio.fechaEdicion;
     tablaProducto.rows[9].cells[1].innerHTML = producto_cambio.stock;
     tablaProducto.rows[10].cells[1].innerHTML = producto_cambio.precio;
